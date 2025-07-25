@@ -1,0 +1,12 @@
+{
+    "recommendations": [
+        "budparr.language-hugo-vscode",
+        "esbenp.prettier-vscode",
+        "heybourn.headwind",
+        "bradlc.vscode-tailwindcss"
+    ],
+    "unwantedRecommendations": [
+        // Disable extensions that might conflict
+        "ms-vscode.vscode-typescript-next"
+    ]
+}

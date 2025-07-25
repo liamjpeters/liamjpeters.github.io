@@ -1,0 +1,20 @@
+{{/* Series badge partial - shows "Part of: {SERIES NAME}" */}}
+{{ if .Params.series }}
+  {{ $seriesKey := .Params.series }}
+  {{ $seriesPages := where site.RegularPages "Section" "series" }}
+  {{ $matchingSeries := where $seriesPages ".File.BaseFileName" $seriesKey }}
+  {{ $seriesPage := index $matchingSeries 0 }}
+  {{ if $seriesPage }}
+    {{/* Only show badge if series is visible OR we're in BuildDrafts mode */}}
+    {{ if or $seriesPage.Params.visible .Site.BuildDrafts }}
+      <div class="mb-6">
+        <a href="{{ $seriesPage.RelPermalink }}" 
+           class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium border-2 transition-colors hover:brightness-125 dark:hover:bg-gray-800 no-underline text-gray-50 dark:text-[{{ $seriesPage.Params.color }}] dark:border-color-[{{ $seriesPage.Params.color }}] bg-[{{ $seriesPage.Params.color }}] dark:bg-transparent">
+          {{ partial "icon.html" (dict "name" "folder" "class" "w-4 h-4 mr-2") }}
+          <span class="mr-1">Part {{ .Params.series_part }} of</span>
+          <span class="font-semibold">{{ $seriesPage.Title }}</span>
+        </a>
+      </div>
+    {{ end }}
+  {{ end }}
+{{ end }}

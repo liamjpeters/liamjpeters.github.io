@@ -1,0 +1,9 @@
+# Hugo template files - Prettier breaks template syntax by splitting quoted strings
+layouts/**/*.html
+archetypes/**/*.md
+
+# Hugo content files (optional - you might want Prettier for regular markdown)
+content/**/*.md
+
+# Hugo configuration that might have template syntax
+hugo.toml

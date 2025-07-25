@@ -1,0 +1,21 @@
+.toc a {
+  @apply text-gray-600 hover:text-gray-400 dark:text-gray-300 hover:dark:text-gray-500 transition-colors duration-200 text-sm leading-relaxed block py-1;
+  text-decoration: none;
+}
+
+.toc a:hover {
+  text-decoration: none;
+}
+
+/* Mobile TOC details styling */
+details[open] .details-arrow {
+  transform: rotate(90deg);
+}
+
+details summary {
+  list-style: none;
+}
+
+details summary::-webkit-details-marker {
+  display: none;
+}

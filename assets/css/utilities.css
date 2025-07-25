@@ -1,0 +1,11 @@
+/* Custom utility classes and prose modifications */
+
+/* Using prose modifier utilities */
+.prose code:not(:where(pre code)):before,
+.prose code:not(:where(pre code)):after {
+  content: none !important;
+}
+
+.prose code:not(:where(pre code)) {
+  font-weight: normal;
+}

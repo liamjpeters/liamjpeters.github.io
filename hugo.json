@@ -1,0 +1,209 @@
+{
+    "baseURL": "https://liamjpeters.github.io/",
+    "languageCode": "en-GB",
+    "title": "Liam Peters",
+    "enableRobotsTXT": true,
+    "enableEmoji": true,
+    "googleAnalytics": "",
+    "build": {
+        "buildStats": {
+            "enable": true
+        },
+        "cachebusters": [
+            {
+                "source": "assets/notwatching/hugo_stats\\.json",
+                "target": "css"
+            },
+            {
+                "source": "(postcss|tailwind)\\.config\\.js",
+                "target": "css"
+            }
+        ]
+    },
+    "module": {
+        "mounts": [
+            {
+                "source": "assets",
+                "target": "assets"
+            },
+            {
+                "source": "assets/img",
+                "target": "static/img"
+            },
+            {
+                "disableWatch": true,
+                "source": "hugo_stats.json",
+                "target": "assets/notwatching/hugo_stats.json"
+            }
+        ]
+    },
+    "pagination": {
+        "pagerSize": 10
+    },
+    "defaultContentLanguage": "en",
+    "hasCJKLanguage": false,
+    "removePathAccents": false,
+    "params": {
+        "description": "A modern blog built with Hugo and Tailwind CSS",
+        "author": "Your Name",
+        "keywords": ["blog", "hugo", "tailwind", "web development"],
+        "images": ["/images/og-image.png"],
+        "showReadingTime": true,
+        "showWordCount": true,
+        "showToc": true,
+        "tocOpen": false,
+        "dateFormat": "January 02 2006"
+    },
+    "social": {
+        "github": "https://github.com/liamjpeters"
+    },
+    "markup": {
+        "goldmark": {
+            "renderer": {
+                "unsafe": true
+            },
+            "extensions": {
+                "linkify": false,
+                "strikethrough": false,
+                "table": true,
+                "taskList": true,
+                "extras": {
+                    "delete": {
+                        "enable": true
+                    },
+                    "subscript": {
+                        "enable": true
+                    },
+                    "superscript": {
+                        "enable": true
+                    },
+                    "insert": {
+                        "enable": true
+                    },
+                    "mark": {
+                        "enable": true
+                    }
+                }
+            },
+            "parser": {
+                "autoHeadingID": true,
+                "autoHeadingIDType": "github"
+            }
+        },
+        "highlight": {
+            "noClasses": false,
+            "lineNos": true,
+            "lineNumbersInTable": false,
+            "tabWidth": 4
+        },
+        "tableOfContents": {
+            "startLevel": 2,
+            "endLevel": 4,
+            "ordered": false
+        }
+    },
+    "menu": {
+        "main": [
+            {
+                "name": "Home",
+                "url": "/",
+                "weight": 1
+            },
+            {
+                "name": "Posts",
+                "url": "/posts",
+                "weight": 2
+            },
+            {
+                "name": "Series",
+                "url": "/series",
+                "weight": 3
+            },
+            {
+                "name": "About",
+                "url": "/about",
+                "weight": 4
+            }
+        ]
+    },
+    "taxonomies": {
+        "tag": "tags"
+    },
+    "related": {
+        "includeNewer": true,
+        "threshold": 80,
+        "toLower": true,
+        "indices": [
+            {
+                "name": "keywords",
+                "weight": 100
+            },
+            {
+                "name": "tags",
+                "weight": 80
+            },
+            {
+                "name": "categories",
+                "weight": 60
+            },
+            {
+                "name": "date",
+                "weight": 10
+            }
+        ]
+    },
+    "privacy": {
+        "disqus": {
+            "disable": true
+        },
+        "googleAnalytics": {
+            "disable": false,
+            "respectDoNotTrack": true,
+            "anonymizeIP": true
+        },
+        "instagram": {
+            "disable": false,
+            "simple": true
+        },
+        "vimeo": {
+            "disable": false,
+            "enableDNT": true,
+            "simple": true
+        },
+        "youtube": {
+            "disable": false,
+            "privacyEnhanced": true
+        }
+    },
+    "outputs": {
+        "home": ["HTML", "RSS", "JSON"],
+        "page": ["HTML"],
+        "section": ["HTML", "RSS"]
+    },
+    "mediaTypes": {
+        "application/json": {
+            "suffixes": ["json"]
+        },
+        "application/atom+xml": {
+            "suffixes": ["atom", "xml"]
+        },
+        "application/xml": {
+            "suffixes": ["xml"]
+        },
+        "text/xml": {
+            "suffixes": ["xml"]
+        }
+    },
+    "outputFormats": {
+        "RSS": {
+            "mediatype": "application/rss+xml",
+            "baseName": "index",
+            "isPlainText": false
+        },
+        "JSON": {
+            "mediatype": "application/json",
+            "baseName": "feed",
+            "isPlainText": true
+        }
+    }
+}

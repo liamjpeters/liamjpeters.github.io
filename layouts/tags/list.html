@@ -1,0 +1,87 @@
+{{ define "main" }}
+<div class="">
+    <header class="mb-12">
+        <h1 class="mb-4 text-4xl font-bold text-gray-900 dark:text-white">
+            {{ if eq .Title "Tags" }}
+                All Tags
+            {{ else }}
+                {{ $tagCount := len .Pages }}
+                {{ $tagCount }} {{ if eq $tagCount 1 }}Post{{ else }}Posts{{ end }} tagged "{{ .Title }}"
+            {{ end }}
+        </h1>
+        {{ if eq .Title "Tags" }}
+            <p class="text-xl text-gray-600 dark:text-gray-300">
+                Discover posts by topic and explore related content.
+            </p>
+        {{ end }}
+    </header>
+
+    {{ if eq .Title "Tags" }}
+        {{/* Show all available tags */}}
+        {{ $tags := .Site.Taxonomies.tags }}
+        {{ if $tags }}
+            <div class="flex flex-col flex-wrap gap-6 sm:flex-row">
+                {{ range $name, $taxonomy := $tags }}
+                {{ $count := .Count }}
+                <a href="/tags/{{ $name | urlize }}/" class="block group">
+                    <div class="p-6 transition-shadow bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:shadow-none hover:shadow-md">
+                        <div class="flex items-center justify-between gap-4">
+                            <h3 class="text-lg font-semibold text-gray-900 transition-colors dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400">
+                                {{ title $name }}
+                            </h3>
+                            <span class="inline-flex items-center px-3 py-1 text-sm font-medium text-gray-700 bg-gray-100 rounded-full dark:bg-gray-900 dark:text-gray-300">
+                                {{ $count }} {{ if eq $count 1 }}post{{ else }}posts{{ end }}
+                            </span>
+                        </div>
+                    </div>
+                </a>
+                {{ end }}
+            </div>
+        {{ else }}
+            <p class="text-gray-600 dark:text-gray-300">No tags found.</p>
+        {{ end }}
+    {{ else }}
+        {{/* Show posts for specific tag */}}
+        {{ if .Pages }}
+        <div class="grid gap-6 md:grid-cols-2">
+            {{ range .Pages.ByDate.Reverse }}
+            <a href="{{ .RelPermalink }}"
+            class="block h-full">
+                <article class="flex flex-col h-full overflow-hidden bg-white border border-gray-200 rounded-lg shadow-sm cursor-pointer dark:bg-gray-800 dark:border-gray-700 hover:shadow-md dark:shadow-none">
+                    <!-- Featured Image -->
+                    {{ if .Params.featured_image }}
+                        {{ $image := .Resources.GetMatch .Params.featured_image }}
+                        {{ if $image }}
+                            <div class="flex-shrink-0 aspect-video">
+                                {{ $thumbnail := $image.Resize "x450 smart avif" }}
+                                <img src="{{ $thumbnail.RelPermalink }}"
+                                    alt="{{ .Title }}"
+                                    class="object-cover w-full h-full">
+                            </div>
+                        {{ end }}
+                    {{ end }}
+
+                    <div class="flex flex-col flex-grow p-6">
+                        <h2 class="mb-2 text-xl font-semibold text-gray-900 dark:text-white">
+                            {{ .Title }}
+                        </h2>
+                        <p class="mb-3 text-sm text-gray-600 dark:text-gray-400">
+                            <time datetime="{{ .Date.Format "2006-01-02"}}">{{ .Date.Format site.Params.dateFormat }}</time>
+                        </p>
+                        <p class="flex-grow mb-4 text-gray-700 dark:text-gray-300 text-balance">
+                            {{ .Description }}
+                        </p>
+                        <div class="flex items-end justify-end">
+                            {{ partial "series-badge-compact.html" . }}
+                        </div>
+                    </div>
+                </article>
+            </a>
+            {{ end }}
+        </div>
+        {{ else }}
+        <p class="text-gray-600 dark:text-gray-300">No posts found with this tag.</p>
+        {{ end }}
+    {{ end }}
+</div>
+{{ end }}

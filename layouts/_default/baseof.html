@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode }}">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1.0">
+        <title>{{ if and .Title (ne .Title .Site.Title) }}{{ .Title }} - {{ end }}{{ .Site.Title }}
+        </title>
+        <meta name="description"
+              content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+
+        <!-- Tailwind CSS -->
+        {{ with (templates.Defer (dict "key" "global")) }}
+        {{ partial "css.html" . }}
+        {{ end }}
+
+        <!-- Google Fonts -->
+        <link rel="preconnect"
+              href="https://fonts.googleapis.com">
+        <link rel="preconnect"
+              href="https://fonts.gstatic.com"
+              crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+              rel="stylesheet">
+
+        <!-- Dark mode script (must be in head to prevent flash) -->
+        <script>
+            // Three-state theme system: 'system' (default), 'light', 'dark'
+            function applyTheme() {
+                const savedTheme = localStorage.getItem('theme'); // null, 'system', 'light', or 'dark'
+                const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+                // Determine if dark mode should be active
+                const shouldBeDark = savedTheme === 'dark' ||
+                    ((!savedTheme || savedTheme === 'system') && systemPrefersDark);
+
+                if (shouldBeDark) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            }
+
+            // Apply theme immediately to prevent flash
+            applyTheme();
+
+            // Set theme icon state immediately to prevent flicker
+            (function () {
+                const savedTheme = localStorage.getItem('theme');
+                const themeToShow = savedTheme || 'system';
+
+                // Add a class to body that CSS can use to show the correct icon
+                document.documentElement.setAttribute('data-theme', themeToShow);
+            })();
+
+            // Listen for system theme changes (when in system mode)
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+                const savedTheme = localStorage.getItem('theme');
+                if (!savedTheme || savedTheme === 'system') {
+                    applyTheme();
+                }
+            });
+        </script>
+
+        <!-- CSS for immediate theme icon display (prevents flicker) -->
+        <style>
+            .theme-icon {
+                display: none;
+            }
+
+            [data-theme="system"] .theme-icon-system,
+            [data-theme="light"] .theme-icon-light,
+            [data-theme="dark"] .theme-icon-dark {
+                display: inline;
+            }
+        </style>
+
+        <!-- If Google Analytics is enabled -->
+        {{ template "_internal/google_analytics.html" . }}
+
+    </head>
+
+    <body class="flex flex-col min-h-screen transition-colors bg-gray-50 dark:bg-gray-900">
+        <!-- Navigation -->
+        <nav id="main-nav"
+             class="sticky top-0 z-50 transition-shadow border-b border-gray-200 dark:border-gray-700 backdrop-blur-sm bg-white/95 dark:bg-gray-800/95 dark:shadow-gray-700 dark:shadow-none">
+            <div class="max-w-5xl px-8 mx-auto">
+                <div class="flex items-center justify-between py-4">
+                    <div class="flex items-center">
+                        <a href="{{ .Site.BaseURL }}"
+                           class="text-xl font-bold text-gray-900 transition-colors dark:text-white hover:text-primary-600 dark:hover:text-primary-400">
+                            {{ .Site.Title }}
+                        </a>
+                    </div>
+                    <!-- Desktop menu -->
+                    <div class="items-center hidden space-x-8 md:flex">
+                        {{ range .Site.Menus.main }}
+                        <a href="{{ .URL }}"
+                           class="font-medium text-gray-700 transition-colors dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400">
+                            {{ .Name }}
+                        </a>
+                        {{ end }}
+                        <!-- Dark mode toggle -->
+                        <button id="theme-toggle"
+                                class="p-2 text-gray-700 transition-colors dark:text-gray-300 hover:text-gray-600 dark:hover:text-gray-400"
+                                title="Automatic theme (follows your device)">
+                            <span class="sr-only">Switch to manual theme control</span>
+                            <!-- System icon (when following system) -->
+                            <span id="theme-toggle-system-icon"
+                                  class="theme-icon theme-icon-system">
+                                {{ partial "icon.html" (dict "name" "half-circle" "class" "w-5 h-5") }}
+                            </span>
+                            <!-- Sun icon (light mode) -->
+                            <span id="theme-toggle-light-icon"
+                                  class="hidden theme-icon theme-icon-light">
+                                {{ partial "icon.html" (dict "name" "sun" "class" "w-5 h-5") }}
+                            </span>
+                            <!-- Moon icon (dark mode) -->
+                            <span id="theme-toggle-dark-icon"
+                                  class="hidden theme-icon theme-icon-dark">
+                                {{ partial "icon.html" (dict "name" "moon" "class" "w-5 h-5") }}
+                            </span>
+                        </button>
+                    </div>
+                    <!-- Mobile menu button -->
+                    <div class="flex items-center space-x-2 md:hidden">
+                        <!-- Mobile dark mode toggle -->
+                        <button id="mobile-theme-toggle"
+                                class="p-2 text-gray-700 transition-colors dark:text-gray-300 hover:text-gray-600 hover:dark:text-gray-400"
+                                title="Automatic theme (follows your device)">
+                            <span class="sr-only">Switch to manual theme control</span>
+                            <!-- System icon (when following system) -->
+                            <span id="mobile-theme-toggle-system-icon"
+                                  class="theme-icon theme-icon-system">
+                                {{ partial "icon.html" (dict "name" "half-circle" "class" "w-5 h-5")
+                                }}
+                            </span>
+                            <!-- Sun icon (light mode) -->
+                            <span id="mobile-theme-toggle-light-icon"
+                                  class="hidden theme-icon theme-icon-light">
+                                {{ partial "icon.html" (dict "name" "sun" "class" "w-5 h-5") }}
+                            </span>
+                            <!-- Moon icon (dark mode) -->
+                            <span id="mobile-theme-toggle-dark-icon"
+                                  class="hidden theme-icon theme-icon-dark">
+                                {{ partial "icon.html" (dict "name" "moon" "class" "w-5 h-5") }}
+                            </span>
+                        </button>
+                        <button type="button"
+                                id="mobile-menu-button"
+                                class="text-gray-700 transition-colors dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400"
+                                aria-expanded="false"
+                                aria-controls="mobile-menu">
+                            <span class="sr-only">Open main menu</span>
+                            <!-- Hamburger icon -->
+                            <span id="menu-icon">
+                                {{ partial "icon.html" (dict "name" "menu" "class" "h-6 w-6") }}
+                            </span>
+                            <!-- Close icon (hidden by default) -->
+                            <span id="close-icon"
+                                  class="hidden">
+                                {{ partial "icon.html" (dict "name" "close" "class" "h-6 w-6") }}
+                            </span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mobile menu (hidden by default) -->
+                <div id="mobile-menu"
+                     class="hidden md:hidden">
+                    <div
+                         class="px-2 pt-2 pb-3 space-y-1 border-t border-gray-200 dark:border-gray-700">
+                        {{ range .Site.Menus.main }}
+                        <a href="{{ .URL }}"
+                           class="block px-3 py-2 font-medium text-gray-700 transition-colors rounded-md dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-50 dark:hover:bg-gray-700">
+                            {{ .Name }}
+                        </a>
+                        {{ end }}
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content  -->
+        <main class="flex-1 px-8 py-8 md:max-w-5xl md:mx-auto">
+            {{ block "main" . }}{{ end }}
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-white border-t border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+            <div class="max-w-5xl px-4 py-8 mx-auto sm:px-6 lg:px-8">
+                <div class="text-sm text-center">
+                    {{/* <p class="mb-4 text-gray-600 dark:text-gray-400">
+                        &copy; {{ now.Format "2006" }} {{ .Site.Params.author }}
+                    </p> */}}
+                    <div
+                         class="flex items-center justify-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+                        <span>Built with ❤️, </span>
+                        <a href="https://gohugo.io"
+                           target="_blank"
+                           class="inline-flex items-center gap-1 text-gray-600 transition-colors dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
+                           title="Hugo Static Site Generator">
+                            {{ partial "icon.html" (dict "name" "hugo" "class" "h-3") }}
+                        </a>
+                        <span>, and </span>
+                        <a href="https://tailwindcss.com"
+                           target="_blank"
+                           class="inline-flex items-center gap-1 text-gray-600 transition-colors dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
+                           title="Tailwind CSS Framework">
+                            {{ partial "icon.html" (dict "name" "tailwindcss" "class" "h-3") }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- JavaScript -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // Navigation scroll shadow effect
+                const mainNav = document.getElementById('main-nav');
+                let ticking = false;
+
+                function updateNavShadow() {
+                    const scrolled = window.scrollY > 10; // Trigger after 10px of scroll
+
+                    if (scrolled) {
+                        mainNav.classList.add('shadow-sm');
+                    } else {
+                        mainNav.classList.remove('shadow-sm');
+                    }
+
+                    ticking = false;
+                }
+
+                function handleScroll() {
+                    if (!ticking) {
+                        requestAnimationFrame(updateNavShadow);
+                        ticking = true;
+                    }
+                }
+
+                // Add scroll event listener
+                window.addEventListener('scroll', handleScroll, { passive: true });
+
+                // Initial check in case page is already scrolled
+                updateNavShadow();
+
+                // Mobile Menu functionality
+                const mobileMenuButton = document.getElementById('mobile-menu-button');
+                const mobileMenu = document.getElementById('mobile-menu');
+                const menuIcon = document.getElementById('menu-icon');
+                const closeIcon = document.getElementById('close-icon');
+
+                let isMenuOpen = false;
+
+                function toggleMenu() {
+                    isMenuOpen = !isMenuOpen;
+
+                    if (isMenuOpen) {
+                        // Show menu
+                        mobileMenu.classList.remove('hidden');
+                        menuIcon.classList.add('hidden');
+                        closeIcon.classList.remove('hidden');
+                        mobileMenuButton.setAttribute('aria-expanded', 'true');
+                    } else {
+                        // Hide menu
+                        mobileMenu.classList.add('hidden');
+                        menuIcon.classList.remove('hidden');
+                        closeIcon.classList.add('hidden');
+                        mobileMenuButton.setAttribute('aria-expanded', 'false');
+                    }
+                }
+
+                // Toggle menu on button click
+                mobileMenuButton.addEventListener('click', toggleMenu);
+
+                // Close menu when clicking on a menu link
+                const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+                mobileMenuLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        if (isMenuOpen) {
+                            toggleMenu();
+                        }
+                    });
+                });
+
+                // Close menu on escape key
+                document.addEventListener('keydown', function (event) {
+                    if (event.key === 'Escape' && isMenuOpen) {
+                        toggleMenu();
+                    }
+                });
+
+                // Close menu when window resizes to desktop size
+                window.addEventListener('resize', function () {
+                    if (window.innerWidth >= 768 && isMenuOpen) {
+                        toggleMenu();
+                    }
+                });
+
+                // Dark Mode functionality
+                const themeToggle = document.getElementById('theme-toggle');
+                const mobileThemeToggle = document.getElementById('mobile-theme-toggle');
+
+                function updateThemeIcons() {
+                    const savedTheme = localStorage.getItem('theme');
+                    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+                    // Determine which icon should be shown and tooltip text
+                    let iconToShow = '';
+                    let tooltipText = '';
+                    let srText = '';
+
+                    if (!savedTheme || savedTheme === 'system') {
+                        iconToShow = 'system';
+                        tooltipText = 'Automatic theme (follows your device)';
+                        srText = 'Switch to manual theme control';
+                    } else if (savedTheme === 'light') {
+                        iconToShow = 'light';
+                        tooltipText = 'Light theme';
+                        srText = 'Switch to dark theme';
+                    } else if (savedTheme === 'dark') {
+                        iconToShow = 'dark';
+                        tooltipText = 'Dark theme';
+                        srText = 'Switch to automatic theme';
+                    }
+
+                    // Update the data-theme attribute for CSS-based icon display
+                    document.documentElement.setAttribute('data-theme', iconToShow);
+
+                    // Update button tooltips and screen reader text
+                    const desktopButton = document.getElementById('theme-toggle');
+                    const mobileButton = document.getElementById('mobile-theme-toggle');
+
+                    if (desktopButton) {
+                        desktopButton.setAttribute('title', tooltipText);
+                        const srSpan = desktopButton.querySelector('.sr-only');
+                        if (srSpan) srSpan.textContent = srText;
+                    }
+
+                    if (mobileButton) {
+                        mobileButton.setAttribute('title', tooltipText);
+                        const srSpan = mobileButton.querySelector('.sr-only');
+                        if (srSpan) srSpan.textContent = srText;
+                    }
+                }
+
+                function toggleTheme() {
+                    const currentSavedTheme = localStorage.getItem('theme');
+                    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+                    // Three-state cycle: system -> light -> dark -> system
+                    if (!currentSavedTheme || currentSavedTheme === 'system') {
+                        // Currently following system, switch to opposite of system
+                        const newTheme = systemPrefersDark ? 'light' : 'dark';
+                        localStorage.setItem('theme', newTheme);
+                        if (newTheme === 'dark') {
+                            document.documentElement.classList.add('dark');
+                        } else {
+                            document.documentElement.classList.remove('dark');
+                        }
+                    } else if (currentSavedTheme === 'light') {
+                        // Currently light, switch to dark
+                        localStorage.setItem('theme', 'dark');
+                        document.documentElement.classList.add('dark');
+                    } else if (currentSavedTheme === 'dark') {
+                        // Currently dark, switch back to system
+                        localStorage.setItem('theme', 'system');
+                        if (systemPrefersDark) {
+                            document.documentElement.classList.add('dark');
+                        } else {
+                            document.documentElement.classList.remove('dark');
+                        }
+                    }
+
+                    // Update icons to reflect new state
+                    updateThemeIcons();
+                }
+
+                // Initialize icons on page load
+                updateThemeIcons();
+                // Add click listeners to both toggle buttons
+                if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
+                if (mobileThemeToggle) mobileThemeToggle.addEventListener('click', toggleTheme);
+                // Keyboard shortcut for theme toggle
+                document.addEventListener('keydown', function (event) {
+                    if ((event.ctrlKey || event.metaKey) && event.shiftKey && event.key === 'D') {
+                        event.preventDefault();
+                        toggleTheme();
+                    }
+                });
+
+                // Code block copy functionality
+                function addCopyButtons() {
+                    const codeBlocks = document.querySelectorAll('pre.chroma, pre:not(.chroma)');
+
+                    codeBlocks.forEach(function (codeBlock) {
+                        // Skip if already has a copy button
+                        if (codeBlock.parentElement.classList.contains('code-block-container')) {
+                            return;
+                        }
+
+                        // Create container wrapper
+                        const container = document.createElement('div');
+                        container.className = 'code-block-container';
+
+                        // Wrap the code block
+                        codeBlock.parentNode.insertBefore(container, codeBlock);
+                        container.appendChild(codeBlock);
+
+                        // Create copy button
+                        const copyButton = document.createElement('button');
+                        copyButton.className = 'copy-button';
+                        copyButton.innerHTML = `
+            {{ partial "icon.html" (dict "name" "copy") | htmlUnescape }}
+            <span>Copy</span>
+          `;
+
+                        // Add click handler
+                        copyButton.addEventListener('click', function () {
+                            const code = codeBlock.querySelector('code') || codeBlock;
+                            let text = '';
+
+                            // Handle Chroma syntax highlighting with line numbers
+                            if (codeBlock.querySelector('.lntable')) {
+                                // Hugo Chroma with line numbers uses a table structure
+                                const codeLines = codeBlock.querySelectorAll('.lntable .lntd:last-child');
+                                text = Array.from(codeLines).map(line => line.textContent || line.innerText).join('\n');
+                            } else if (codeBlock.querySelector('.ln')) {
+                                // Handle line numbers that are separate elements
+                                const clone = code.cloneNode(true);
+                                const lineNumbers = clone.querySelectorAll('.ln, .lnt');
+                                lineNumbers.forEach(ln => ln.remove());
+                                text = clone.textContent || clone.innerText;
+                            } else {
+                                // No line numbers, get all text
+                                text = code.textContent || code.innerText;
+                            }
+
+                            // Clean up the text (remove extra whitespace at start/end)
+                            text = text.trim();
+
+                            navigator.clipboard.writeText(text).then(function () {
+                                // Success feedback
+                                copyButton.innerHTML = `
+                {{ partial "icon.html" (dict "name" "check") | htmlUnescape }}
+                <span>Copied!</span>
+              `;
+                                copyButton.classList.add('copied');
+
+                                // Reset after 2 seconds
+                                setTimeout(function () {
+                                    copyButton.innerHTML = `
+                  {{ partial "icon.html" (dict "name" "copy") | htmlUnescape }}
+                  <span>Copy</span>
+                `;
+                                    copyButton.classList.remove('copied');
+                                }, 2000);
+                            }).catch(function (err) {
+                                console.error('Failed to copy: ', err);
+                                // Fallback for older browsers - use the same text extraction logic
+                                const textArea = document.createElement('textarea');
+                                textArea.value = text;
+                                document.body.appendChild(textArea);
+                                textArea.select();
+                                document.execCommand('copy');
+                                document.body.removeChild(textArea);
+
+                                copyButton.innerHTML = `
+                {{ partial "icon.html" (dict "name" "check") | htmlUnescape }}
+                <span>Copied!</span>
+              `;
+                                copyButton.classList.add('copied');
+                                setTimeout(function () {
+                                    copyButton.innerHTML = `
+                  {{ partial "icon.html" (dict "name" "copy") | htmlUnescape }}
+                  <span>Copy</span>
+                `;
+                                    copyButton.classList.remove('copied');
+                                }, 2000);
+                            });
+                        });
+
+                        // Add button to container
+                        container.appendChild(copyButton);
+                    });
+                }
+
+                // Initialize copy buttons
+                addCopyButtons();
+
+                // Re-add copy buttons if content is dynamically loaded
+                const observer = new MutationObserver(function (mutations) {
+                    mutations.forEach(function (mutation) {
+                        if (mutation.type === 'childList') {
+                            addCopyButtons();
+                        }
+                    });
+                });
+
+                observer.observe(document.body, {
+                    childList: true,
+                    subtree: true
+                });
+            });
+        </script>
+    </body>
+
+</html>

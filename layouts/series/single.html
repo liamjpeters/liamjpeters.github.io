@@ -1,0 +1,112 @@
+{{ define "main" }}
+{{ $seriesKey := .File.BaseFileName }}
+{{ $seriesData := . }}
+
+{{ if $seriesData }}
+    {{ $seriesPosts := where site.RegularPages "Params.series" $seriesKey }}
+{{ if $seriesPosts }}
+    {{ $seriesPosts = sort $seriesPosts "Params.series_part" "asc" }}
+{{ end }}
+
+<div class="">
+    <header class="mb-12">
+        <div class="flex items-center mb-4">
+            <a href="/series/"
+               class="mr-4 text-gray-500 transition-colors dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
+                {{ partial "icon.html" (dict "name" "arrow-left" "class" "w-5 h-5") }}
+            </a>
+            <nav class="text-sm text-gray-500 dark:text-gray-400">
+                <a href="/series/"
+                   class="hover:text-gray-700 dark:hover:text-gray-300">Series</a>
+                <span class="mx-2">/</span>
+                <span>{{ $seriesData.Title }}</span>
+            </nav>
+        </div>
+
+        <h1
+            class="mb-4 text-4xl font-bold text-gray-900 dark:text-white text-[{{ $seriesData.Params.color }}]">
+            {{ $seriesData.Title }}
+        </h1>
+        <p class="mb-8 text-xl text-gray-600 dark:text-gray-300">{{ $seriesData.Params.description
+            }}
+        </p>
+
+        <div class="flex items-center space-x-6 text-sm text-gray-500 dark:text-gray-400">
+            <div class="flex items-center">
+                {{ partial "icon.html" (dict "name" "book" "class" "w-4 h-4 mr-2") }}
+                {{ len $seriesPosts }} {{ if eq (len $seriesPosts) 1 }}part{{ else }}parts{{ end }}
+            </div>
+            {{ if $seriesPosts }}
+            {{ $totalReadingTime := 0 }}
+            {{ range $seriesPosts }}
+            {{ $totalReadingTime = add $totalReadingTime .ReadingTime }}
+            {{ end }}
+            <div class="flex items-center">
+                {{ partial "icon.html" (dict "name" "clock" "class" "w-4 h-4 mr-2") }}
+                {{ $totalReadingTime }} min total read
+            </div>
+            {{ end }}
+        </div>
+    </header>
+
+    {{ if $seriesPosts }}
+    <div class="space-y-6">
+        <h2 class="mb-6 text-2xl font-bold text-gray-900 dark:text-white">All Parts</h2>
+
+        {{ range $index, $post := $seriesPosts }}
+        <a href="{{ $post.RelPermalink }}" class="block">
+        <article
+                 class="p-6 transition-shadow bg-white border border-gray-200 rounded-lg shadow-sm cursor-pointer dark:bg-gray-800 dark:border-gray-700 hover:shadow-md dark:shadow-none">
+            <div class="flex items-start">
+                <div class="flex-shrink-0 mr-4">
+                    <span
+                          class="inline-flex items-center justify-center w-8 h-8 rounded-full text-sm font-bold text-white bg-[{{ $seriesData.Params.color }}]">
+                        {{ $post.Params.series_part }}
+                    </span>
+                </div>
+                <div class="flex-1">
+                    <h3 class="mb-2 text-xl font-semibold text-gray-900 transition-colors dark:text-white hover:text-primary-600 dark:hover:text-primary-400">
+
+                            {{ $post.Title }}
+                    </h3>
+                    {{ if $post.Params.description }}
+                    <p class="mb-3 text-gray-600 dark:text-gray-300">{{ $post.Params.description }}
+                    </p>
+                    {{ end }}
+                    <div class="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                        <time datetime="{{ $post.Date.Format "2006-01-02"}}">
+                            {{ $post.Date.Format "January 2, 2006" }}
+                        </time>
+                        {{ if $post.ReadingTime }}
+                        <span class="mx-2">•</span>
+                        <span>{{ $post.ReadingTime }} min read</span>
+                        {{ end }}
+                    </div>
+                </div>
+            </div>
+        </article>
+        </a>
+        {{ end }}
+    </div>
+    {{ else }}
+    <div class="py-12 text-center">
+        {{ partial "icon.html" (dict "name" "book" "class" "w-16 h-16 mx-auto text-gray-400 dark:text-gray-600 mb-4") }}
+        <h3 class="mb-2 text-lg font-medium text-gray-900 dark:text-white">No posts yet</h3>
+        <p class="text-gray-500 dark:text-gray-400">This series is coming soon!</p>
+    </div>
+    {{ end }}
+</div>
+{{ else }}
+<div class="max-w-4xl py-12 mx-auto text-center">
+    <h1 class="mb-4 text-4xl font-bold text-gray-900 dark:text-white">Series Not Found</h1>
+    <p class="mb-8 text-xl text-gray-600 dark:text-gray-300">The requested series could not be
+        found.
+    </p>
+    <a href="/series/"
+       class="inline-flex items-center px-4 py-2 text-white transition-colors rounded-md bg-primary-600 hover:bg-primary-700">
+        {{ partial "icon.html" (dict "name" "arrow-left" "class" "w-4 h-4 mr-2") }}
+        Back to Series
+    </a>
+</div>
+{{ end }}
+{{ end }}

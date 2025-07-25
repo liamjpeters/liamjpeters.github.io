@@ -1,0 +1,23 @@
+{{/*
+Shortcode to fetch and display the latest version of a PowerShell module from NuGet API
+Usage: {{< nuget-module-version "Az.Accounts" >}}
+*/}}
+
+{{ $moduleName := .Get 0 }}
+{{ $apiUrl := printf "https://api.nuget.org/v3-flatcontainer/%s/index.json" ($moduleName | lower) }}
+
+{{ with try (resources.GetRemote $apiUrl) }}
+  {{ with .Err }}
+    <span class="text-red-500">Error fetching version: {{ . }}</span>
+  {{ else with .Value }}
+    {{ $data := . | transform.Unmarshal }}
+    {{ if $data.versions }}
+      {{ $latestVersion := index $data.versions (sub (len $data.versions) 1) }}
+      <code class="px-2 py-1 bg-gray-100 dark:bg-gray-800 text-sm rounded">{{ $latestVersion }}</code>
+    {{ else }}
+      <span class="text-yellow-500">No versions found</span>
+    {{ end }}
+  {{ else }}
+    <span class="text-yellow-500">Module not found</span>
+  {{ end }}
+{{ end }}

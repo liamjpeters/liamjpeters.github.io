@@ -1,0 +1,104 @@
+{{ define "main" }}
+<div class="px-0 {{ if strings.Contains .TableOfContents "li"}}md:grid md:grid-cols-[auto_1fr] md:gap-x-8 md:w-full{{ end }}">
+  <!-- Table of Contents Sidebar (Desktop) -->
+  {{ if strings.Contains .TableOfContents "li" }}
+    <aside class="hidden lg:block lg:w-64 lg:flex-shrink-0">
+      <div class="sticky max-h-screen pb-2 overflow-y-auto top-24">
+        <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:shadow-none">
+          <h3 class="mb-4 text-lg font-semibold text-gray-900 dark:text-white">Table of Contents</h3>
+          <div class="toc text-sm [&_ul]:list-none [&_ul]:pl-0 [&_ul_ul]:pl-4 [&_ul_ul]:mt-1 [&_li]:my-1">
+            {{ .TableOfContents }}
+          </div>
+        </div>
+      </div>
+    </aside>
+  {{ end }}
+
+  <!-- Main Content -->
+  <article class="min-w-0">
+    <!-- Table of Contents (Mobile) -->
+    {{ if strings.Contains .TableOfContents "li" }}
+      <div class="mb-6 lg:hidden">
+        <details class="bg-white border border-gray-200 dark:bg-gray-800 rounded-lg shadow-sm dark:shadow-none dark:border dark:border-gray-700 [&[open]_.details-arrow]:rotate-90">
+          <summary class="px-4 py-3 cursor-pointer text-gray-900 dark:text-white font-medium hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg list-none [&::-webkit-details-marker]:hidden">
+            <span class="flex items-center">
+              <svg class="w-4 h-4 mr-2 transition-transform transform details-arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+              Table of Contents
+            </span>
+          </summary>
+          <div class="px-4 pb-4 toc text-sm [&_ul]:list-none [&_ul]:pl-0 [&_ul_ul]:pl-4 [&_ul_ul]:mt-1 [&_li]:my-1">
+            {{ .TableOfContents }}
+          </div>
+        </details>
+      </div>
+    {{ end }}
+
+    <!-- Hero/Featured Image -->
+    {{ if .Params.featured_image }}
+      {{ $image := .Resources.GetMatch .Params.featured_image }}
+      {{ if $image }}
+        <div class="mb-8">
+          {{ $hero := $image.Resize "x1200 smart avif" }}
+          <img src="{{ $hero.RelPermalink }}" 
+               alt="{{ .Title }}" 
+               class="object-cover w-full h-64 border border-gray-200 rounded-lg shadow-sm md:h-80 dark:shadow-none dark:border-gray-700">
+        </div>
+      {{ end }}
+    {{ end }}
+
+    <!-- Series Badge -->
+    {{ partial "series-badge.html" . }}
+
+  <!-- Post Header -->
+  <header class="mb-8">
+    <h1 class="mb-4 text-4xl font-bold text-gray-900 dark:text-white">{{ .Title }}</h1>
+    <div class="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-400">
+      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format site.Params.dateFormat }}</time>
+      <span>•</span>
+      <span>{{ .ReadingTime }} min read</span>
+      {{ if .Params.tags }}
+        <span>•</span>
+        <div class="flex flex-wrap gap-2">
+          {{ range .Params.tags }}
+            <a href="/tags/{{ . | urlize }}/" 
+               class="inline-flex items-center px-3 py-1 text-xs font-medium text-gray-700 transition-colors bg-gray-100 rounded-full dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700">
+              {{ . }}
+            </a>
+          {{ end }}
+        </div>
+      {{ end }}
+    </div>
+  </header>
+
+  <!-- Post Content -->
+  <div class="prose dark:prose-invert">
+    {{ .Content }}
+  </div>
+
+  <!-- Navigation -->
+  <nav class="flex items-center justify-between pt-8 mt-12 border-t border-gray-200 dark:border-gray-700">
+    <div>
+      {{ with .PrevInSection }}
+        <a href="{{ .RelPermalink }}" class="flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300">
+          <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+          Previous: {{ .Title }}
+        </a>
+      {{ end }}
+    </div>
+    <div>
+      {{ with .NextInSection }}
+        <a href="{{ .RelPermalink }}" class="flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300">
+          Next: {{ .Title }}
+          <svg class="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+      {{ end }}
+    </div>
+  </nav>
+</article>
+{{ end }}

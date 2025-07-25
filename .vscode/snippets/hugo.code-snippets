@@ -1,0 +1,61 @@
+{
+  "Hugo Front Matter": {
+    "scope": "markdown",
+    "prefix": "hugo-front",
+    "body": [
+      "---",
+      "title: \"${1:Title}\"",
+      "date: ${2:${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE}T${CURRENT_HOUR}:${CURRENT_MINUTE}:${CURRENT_SECOND}${3:+00:00}}",
+      "draft: ${4:true}",
+      "tags: [${5:\"tag1\", \"tag2\"}]",
+      "featured_image: ${6:\"image.jpg\"}",
+      "description: \"${7:Description}\"",
+      "series: \"${8:Series Name}\"",
+      "series_part: ${9:1}",
+      "---",
+      "",
+      "${0}"
+    ],
+    "description": "Hugo front matter template"
+  },
+  
+  "Hugo Shortcode": {
+    "scope": "markdown",
+    "prefix": "hugo-short",
+    "body": [
+      "{{< ${1:shortcode} ${2:param=\"value\"} >}}${3:content}{{< /${1:shortcode} >}}"
+    ],
+    "description": "Hugo shortcode template"
+  },
+  
+  "Hugo Partial": {
+    "scope": "html",
+    "prefix": "hugo-partial",
+    "body": [
+      "{{ partial \"${1:partial-name}\" ${2:.} }}"
+    ],
+    "description": "Hugo partial template"
+  },
+  
+  "Hugo Range": {
+    "scope": "html",
+    "prefix": "hugo-range",
+    "body": [
+      "{{ range ${1:.Site.RegularPages} }}",
+      "  ${2:<!-- content -->}",
+      "{{ end }}"
+    ],
+    "description": "Hugo range template"
+  },
+  
+  "Hugo If": {
+    "scope": "html", 
+    "prefix": "hugo-if",
+    "body": [
+      "{{ if ${1:condition} }}",
+      "  ${2:<!-- content -->}",
+      "{{ end }}"
+    ],
+    "description": "Hugo if statement"
+  }
+}

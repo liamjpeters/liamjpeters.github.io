@@ -1,0 +1,21 @@
+{{/* Compact series badge partial - minimal pill with icon for lists */}}
+{{ if .Params.series }}
+  {{ $seriesKey := .Params.series }}
+  {{ $seriesPages := where site.RegularPages "Section" "series" }}
+  {{ $matchingSeries := where $seriesPages ".File.BaseFileName" $seriesKey }}
+  {{ $seriesPage := index $matchingSeries 0 }}
+  {{ if $seriesPage }}
+    {{/* Only show badge if series is visible OR we're in BuildDrafts mode */}}
+    {{ if or $seriesPage.Params.visible .Site.BuildDrafts }}
+      <span class="inline-flex items-center px-2 py-1 overflow-hidden text-sm font-medium transition-all duration-200 ease-in-out rounded-full group md:px-2 whitespace-nowrap md:hover:px-3"
+            style="background-color: {{ $seriesPage.Params.color }}15; color: {{ $seriesPage.Params.color }};"
+            title="Part {{ .Params.series_part }} of {{ $seriesPage.Title }}"
+            aria-label="Part {{ .Params.series_part }} of {{ $seriesPage.Title }} series">
+        {{ partial "icon.html" (dict "name" "book" "class" "w-4 h-4 flex-shrink-0") }}
+        <span class="ml-2 overflow-hidden transition-all duration-200 ease-in-out md:max-w-0 md:ml-0 md:group-hover:max-w-xs md:group-hover:ml-2">
+          Part {{ .Params.series_part }} of {{ $seriesPage.Title }}
+        </span>
+      </span>
+    {{ end }}
+  {{ end }}
+{{ end }}

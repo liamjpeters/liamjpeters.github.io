@@ -1,0 +1,82 @@
+# Hugo
+public/
+.hugo_build.lock
+hugo_stats.json
+resources/_gen/
+
+# Tailwind CSS - Generated files (built by GitHub Actions)
+static/css/output.css
+
+# Node.js (if you ever add npm packages)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# VS Code
+# Keep .vscode/tasks.json, extensions.json, keybindings.json, and snippets/ as project-specific
+
+# Development containers and cloud IDEs
+.devcontainer/.env
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+
+# Linux
+*~
+.directory
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+*.cache
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# IDE files
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Build artifacts
+dist/
+build/
+
+# Hugo themes (if you ever add git submodules)
+themes/*/
+
+# Local development
+.hugo_build.lock
+
+# Image thumbnails
+*.thumbs
+
+# Archive files
+*.zip
+*.tar.gz
+*.rar

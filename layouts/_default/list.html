@@ -1,0 +1,51 @@
+{{ define "main" }}
+<div class="space-y-8">
+    {{ if .Content }}
+    <div class="text-xl prose text-gray-600 dark:prose-invert dark:text-gray-300">
+        {{ .Content }}
+    </div>
+    {{ end }}
+    <!-- Recent Posts -->
+    <div>
+        <h2 class="mb-6 text-2xl font-bold text-gray-900 dark:text-white">Recent Posts</h2>
+        <div class="grid gap-6 md:grid-cols-2">
+            {{ range first 6 (where .Site.RegularPages "Type" "posts") }}
+            <a href="{{ .RelPermalink }}"
+               class="block h-full">
+                <article class="flex flex-col h-full overflow-hidden transition-shadow bg-white border border-gray-200 rounded-lg shadow-sm cursor-pointer dark:bg-gray-800 dark:border-gray-700 hover:shadow-md dark:shadow-none">
+                    <!-- Featured Image -->
+                    {{ if .Params.featured_image }}
+                        {{ $image := .Resources.GetMatch .Params.featured_image }}
+                        {{ if $image }}
+                            <div class="flex-shrink-0 aspect-video">
+                                {{ $thumbnail := $image.Resize "x450 smart avif" }}
+                                <img src="{{ $thumbnail.RelPermalink }}"
+                                    alt="{{ .Title }}"
+                                    class="object-cover w-full h-full">
+                            </div>
+                        {{ end }}
+                    {{ end }}
+
+                    <div class="flex flex-col flex-grow p-6">
+                        <h2 class="mb-2 text-xl font-semibold text-gray-900 dark:text-white">
+                            {{ .Title }}
+                        </h2>
+                        <p class="mb-3 text-sm text-gray-600 dark:text-gray-400">
+                            <time datetime="{{ .Date.Format "2006-01-02"}}">
+                                {{ .Date.Format site.Params.dateFormat }}
+                            </time>
+                        </p>
+                        <p class="flex-grow mb-4 text-gray-700 dark:text-gray-300 text-balance">
+                            {{ .Description }}</p>
+                        <div class="flex items-end justify-end">
+                            {{ partial "series-badge-compact.html" . }}
+                        </div>
+                    </div>
+                </article>
+            </a>
+            {{ end }}
+        </div>
+    </div>
+
+</div>
+{{ end }}

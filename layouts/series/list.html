@@ -1,0 +1,80 @@
+{{ define "main" }}
+<div class="">
+  <header class="mb-12">
+    <h1 class="mb-4 text-4xl font-bold text-gray-900 dark:text-white">{{ .Title }}</h1>
+    {{ if .Content }}
+    <div class="text-xl text-gray-600 dark:text-gray-300">{{ .Content }}</div>
+    {{ else }}
+    <p class="text-xl text-gray-600 dark:text-gray-300">{{ .Description}}</p>
+    {{ end }}
+  </header>
+
+  <div class="grid gap-8">
+    {{ $seriesPages := where .Site.RegularPages "Section" "series" }}
+    {{ $seriesPages = where $seriesPages "Draft" false }}
+    {{ if .Site.BuildDrafts }}
+      {{/* In development mode, show all series regardless of visible status */}}
+    {{ else }}
+      {{/* In production mode, only show visible series */}}
+      {{ $seriesPages = where $seriesPages "Params.visible" true }}
+    {{ end }}
+    {{ $seriesPages = sort $seriesPages "Params.order" }}
+
+    {{ range $seriesPages }}
+      {{ $seriesKey := .File.BaseFileName }}
+      {{ $seriesPosts := where site.RegularPages "Params.series" $seriesKey }}
+      {{ if $seriesPosts }}
+        {{ $seriesPosts = sort $seriesPosts "Params.series_part" "desc" }}
+      {{ end }}
+      {{ $postCount := len $seriesPosts }}
+      {{ $seriesColor := .Params.color }}
+      
+      <a href="{{ .RelPermalink }}" class="block">
+        <article class="overflow-hidden transition-shadow bg-white border border-gray-200 rounded-lg shadow-sm cursor-pointer dark:bg-gray-800 dark:border-gray-700 hover:shadow-md dark:shadow-none">
+          <div class="p-8">
+            <div class="flex flex-col items-start justify-between gap-4 mb-4 md:flex-row">
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
+                {{ .Title }}
+              </h2>
+              <div class="flex items-center px-3 py-1 text-sm font-medium rounded-full bg-[{{ .Params.color }}15] text-[{{ .Params.color }}]">
+                {{ partial "icon.html" (dict "name" "book" "class" "w-4 h-4 mr-1") }}
+                {{ $postCount }} {{ if eq $postCount 1 }}part{{ else }}parts{{ end }}
+              </div>
+            </div>
+            
+            <p class="mb-6 text-gray-600 dark:text-gray-300">{{ .Params.description }}</p>
+            
+            {{ if $seriesPosts }}
+              <div class="space-y-3">
+                <h3 class="text-sm font-semibold tracking-wide text-gray-900 uppercase dark:text-white">Recent Parts:</h3>
+                {{ range first 3 $seriesPosts }}
+                  <div class="flex items-center text-sm">
+                    <span class="inline-flex items-center justify-center w-6 h-6 mr-3 text-xs font-medium rounded-full bg-[{{ $seriesColor }}] text-white">
+                      {{ .Params.series_part }}
+                    </span>
+                    <span class="text-gray-700 dark:text-gray-300">
+                      {{ .Title }}
+                    </span>
+                  </div>
+                {{ end }}
+                {{ if gt $postCount 3 }}
+                  <div class="text-sm text-gray-500 dark:text-gray-400 ml-9">
+                    and {{ sub $postCount 3 }} more...
+                  </div>
+                {{ end }}
+              </div>
+            {{ end }}
+            
+            <div class="mt-6">
+              <span class="inline-flex items-center px-4 py-2 text-sm font-medium transition-colors rounded-md bg-[{{ .Params.color }}] text-white">
+                View Complete Series
+                {{ partial "icon.html" (dict "name" "arrow-right" "class" "ml-2 w-4 h-4") }}
+              </span>
+            </div>
+          </div>
+        </article>
+      </a>
+    {{ end }}
+  </div>
+</div>
+{{ end }}
