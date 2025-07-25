@@ -28,7 +28,7 @@ jobs:
           submodules: recursive
 
       - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v2
+        uses: peaceiris/actions-hugo@v3
         with:
           hugo-version: '0.148.1'  # Ensure version supports css.TailwindCSS
           extended: true
