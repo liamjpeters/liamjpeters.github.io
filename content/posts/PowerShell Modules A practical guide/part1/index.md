@@ -1,6 +1,6 @@
 ---
 title: "Your First PowerShell Function: The Essential Building Block"
-date: 2025-07-22T10:00:00-07:00
+date: 2025-07-25T10:00:00-00:00
 draft: false
 tags: ["PowerShell", "Module Development"]
 featured_image: "hero.jpg"
