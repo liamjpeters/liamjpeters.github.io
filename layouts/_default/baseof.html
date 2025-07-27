@@ -9,6 +9,9 @@
         </title>
         <meta name="description"
               content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+        
+        <!-- Theme color for mobile status bar and PWA -->
+        <meta name="theme-color" content="#1f2937" id="theme-color-meta">
 
         <!-- Tailwind CSS -->
         {{ with (templates.Defer (dict "key" "global")) }}
@@ -27,6 +30,14 @@
         <!-- Dark mode script (must be in head to prevent flash) -->
         <script>
             // Three-state theme system: 'system' (default), 'light', 'dark'
+            function updateThemeColor() {
+                const meta = document.getElementById('theme-color-meta');
+                if (meta) {
+                    const isDark = document.documentElement.classList.contains('dark');
+                    meta.content = isDark ? '#1f2937' : '#f8fafc'; // gray-800 : gray-50
+                }
+            }
+
             function applyTheme() {
                 const savedTheme = localStorage.getItem('theme'); // null, 'system', 'light', or 'dark'
                 const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -40,6 +51,9 @@
                 } else {
                     document.documentElement.classList.remove('dark');
                 }
+                
+                // Update theme color for mobile status bar
+                updateThemeColor();
             }
 
             // Apply theme immediately to prevent flash
@@ -377,6 +391,9 @@
 
                     // Update icons to reflect new state
                     updateThemeIcons();
+                    
+                    // Update theme color for mobile status bar
+                    updateThemeColor();
                 }
 
                 // Initialize icons on page load
