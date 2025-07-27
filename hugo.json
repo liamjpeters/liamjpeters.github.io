@@ -5,6 +5,7 @@
     "enableRobotsTXT": true,
     "enableEmoji": true,
     "googleAnalytics": "",
+    "disableHugoGeneratorInject": true,
     "build": {
         "buildStats": {
             "enable": true
