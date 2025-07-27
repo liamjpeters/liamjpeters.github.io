@@ -41,9 +41,9 @@
         <!-- Recent Posts -->
         {{ range first 4 (where .Site.RegularPages "Type" "posts") }}
         <a href="{{ .RelPermalink }}" 
-           class="flex items-center p-3 transition-colors duration-200 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 group">
-          {{ partial "icon.html" (dict "name" "book" "class" "w-4 h-4 mr-3 text-gray-400 group-hover:text-blue-500 dark:text-gray-500 dark:group-hover:text-blue-400 transition-colors duration-200") }}
-          <span class="text-sm text-gray-700 truncate transition-colors duration-200 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white">
+           class="flex items-center min-w-0 p-3 transition-colors duration-200 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 group">
+          {{ partial "icon.html" (dict "name" "book" "class" "w-4 h-4 mr-3 text-gray-400 dark:text-gray-500 transition-colors duration-200") }}
+          <span class="text-sm text-gray-700 truncate transition-colors duration-200 dark:text-gray-300">
             {{ .Title }}
           </span>
         </a>
@@ -52,8 +52,8 @@
         <!-- Series Page -->
         <a href="/series/" 
            class="flex items-center p-3 transition-colors duration-200 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 group">
-          {{ partial "icon.html" (dict "name" "folder" "class" "w-4 h-4 mr-3 text-gray-400 group-hover:text-blue-500 dark:text-gray-500 dark:group-hover:text-blue-400 transition-colors duration-200") }}
-          <span class="text-sm text-gray-700 transition-colors duration-200 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white">
+          {{ partial "icon.html" (dict "name" "folder" "class" "w-4 h-4 mr-3 text-gray-400 dark:text-gray-500 transition-colors duration-200") }}
+          <span class="text-sm text-gray-700 transition-colors duration-200 dark:text-gray-300">
             Browse Series
           </span>
         </a>
@@ -61,8 +61,8 @@
         <!-- About Page -->
         <a href="/about/" 
            class="flex items-center p-3 transition-colors duration-200 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 group">
-          {{ partial "icon.html" (dict "name" "light-bulb" "class" "w-4 h-4 mr-3 text-gray-400 group-hover:text-blue-500 dark:text-gray-500 dark:group-hover:text-blue-400 transition-colors duration-200") }}
-          <span class="text-sm text-gray-700 transition-colors duration-200 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white">
+          {{ partial "icon.html" (dict "name" "light-bulb" "class" "w-4 h-4 mr-3 text-gray-400 dark:text-gray-500 transition-colors duration-200") }}
+          <span class="text-sm text-gray-700 transition-colors duration-200 dark:text-gray-300">
             About Me
           </span>
         </a>
