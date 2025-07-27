@@ -11,7 +11,7 @@
               content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
         
         <!-- Theme color for mobile status bar and PWA -->
-        <meta name="theme-color" content="#1f2937" id="theme-color-meta">
+        <meta name="theme-color" content="#1a1a1d" id="theme-color-meta">
 
         <!-- Tailwind CSS -->
         {{ with (templates.Defer (dict "key" "global")) }}
@@ -34,7 +34,7 @@
                 const meta = document.getElementById('theme-color-meta');
                 if (meta) {
                     const isDark = document.documentElement.classList.contains('dark');
-                    meta.content = isDark ? '#1f2937' : '#f8fafc'; // gray-800 : gray-50
+                    meta.content = isDark ? '#1a1a1d' : '#ffffff'; // gray-800 : white
                 }
             }
 
