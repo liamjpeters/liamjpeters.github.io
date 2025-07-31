@@ -53,14 +53,22 @@
 
   <!-- Post Header -->
   <header class="mb-8">
-    <h1 class="mb-4 text-4xl font-bold text-gray-900 dark:text-white">{{ .Title }}</h1>
-    <div class="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-400">
-      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format site.Params.dateFormat }}</time>
-      <span>•</span>
-      <span>{{ .ReadingTime }} min read</span>
+    <h1 class="mb-6 text-4xl font-bold text-gray-900 dark:text-white">{{ .Title }}</h1>
+    
+    <div class="flex flex-col justify-between gap-2 md:items-center md:flex-row">
+      <!-- Left side: Date and Reading time stacked -->
+      <div class="flex flex-col flex-1 min-w-0 gap-2 text-sm text-gray-600 dark:text-gray-400">
+        <time datetime="{{ .Date.Format "2006-01-02" }}" class="font-medium whitespace-nowrap">
+          {{ .Date.Format site.Params.dateFormat }}
+        </time>
+        <span class="whitespace-nowrap">
+            {{ .ReadingTime }} min read
+        </span>
+      </div>
+      
+      <!-- Right side: Tags (constrained to not overwhelm) -->
       {{ if .Params.tags }}
-        <span>•</span>
-        <div class="flex flex-wrap gap-2">
+        <div class="flex flex-wrap flex-shrink-0 gap-2 md:justify-end md:max-w-md">
           {{ range .Params.tags }}
             <a href="/tags/{{ . | urlize }}/" 
                class="inline-flex items-center px-3 py-1 text-xs font-medium text-gray-700 transition-colors bg-gray-100 rounded-full dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700">
