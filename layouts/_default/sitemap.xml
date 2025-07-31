@@ -1,0 +1,71 @@
+{{ printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:ai="https://schema.org/ImageGenerationTechnology">
+  {{- range .Data.Pages }}
+  {{- $context := . -}}
+  {{- if and (not .Draft) (not (in .RelPermalink "/404")) (not (and (isset .Params "noindex") .Params.noindex)) }}
+  <url>
+    <loc>{{ .Permalink }}</loc>
+    {{- with .Lastmod }}
+    <lastmod>{{ .Format "2006-01-02T15:04:05Z07:00" }}</lastmod>
+    {{- end }}
+    
+    {{- /* Priority based on content type */ -}}
+    {{- $priority := 0.5 -}}
+    {{- if .IsHome }}
+      {{- $priority = 1.0 -}}
+    {{- else if eq .Type "posts" }}
+      {{- $priority = 0.8 -}}
+    {{- else if eq .Type "series" }}
+      {{- $priority = 0.6 -}}
+    {{- else if eq .Type "page" }}
+      {{- if eq .Title "About" }}
+        {{- $priority = 0.7 -}}
+      {{- else }}
+        {{- $priority = 0.6 -}}
+      {{- end }}
+    {{- else if eq .Type "tags" }}
+      {{- $priority = 0.4 -}}
+    {{- end }}
+    <priority>{{ $priority }}</priority>
+    
+    {{- /* Change frequency based on content type */ -}}
+    {{- $changefreq := "monthly" -}}
+    {{- if .IsHome }}
+      {{- $changefreq = "weekly" -}}
+    {{- else if eq .Type "posts" }}
+      {{- $changefreq = "monthly" -}}
+    {{- else if eq .Type "series" }}
+      {{- $changefreq = "monthly" -}}
+    {{- else if eq .Type "page" }}
+      {{- $changefreq = "yearly" -}}
+    {{- else if eq .Type "tags" }}
+      {{- $changefreq = "weekly" -}}
+    {{- end }}
+    <changefreq>{{ $changefreq }}</changefreq>
+    
+    {{- /* Include featured image if present */ -}}
+    {{- with .Params.featured_image }}
+    <image:image>
+      <image:loc>{{ partial "social-image-url.html" (dict "image" . "context" $context "type" "og") }}</image:loc>
+      <image:title>{{ $context.Title }}</image:title>
+      {{- with $context.Description }}
+      <image:caption>{{ . }}</image:caption>
+      {{- end }}
+      {{- /* AI generation metadata */ -}}
+      {{- if $context.Params.ai_generated_image }}
+      <ai:generated>true</ai:generated>
+      {{- with $context.Params.ai_tool }}
+      <ai:tool>{{ . }}</ai:tool>
+      {{- end }}
+      {{- with $context.Params.ai_prompt }}
+      <ai:prompt>{{ . }}</ai:prompt>
+      {{- end }}
+      {{- end }}
+    </image:image>
+    {{- end }}
+  </url>
+  {{- end }}
+  {{- end }}
+</urlset>
