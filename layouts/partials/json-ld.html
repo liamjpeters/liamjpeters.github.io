@@ -16,7 +16,7 @@
   {{- with .Params.featured_image }}
   "image": {
     "@type": "ImageObject",
-    "url": {{ printf "%s%s" $context.Permalink . | jsonify }},
+    "url": {{ partial "social-image-url.html" (dict "image" . "context" $context "type" "schema") | jsonify }},
     "width": 1200,
     "height": 630
   },
