@@ -44,7 +44,7 @@ job, input, and output.
 
 At its simplest, a PowerShell function looks like this:
 
-```PowerShell {hl_lines=[2,4]}
+```PowerShell
 function My-Function {
     # Your code goes here
     Write-Host "Hello from My-Function!"
