@@ -7,6 +7,11 @@
     "enableGitInfo": true,
     "googleAnalytics": "",
     "disableHugoGeneratorInject": true,
+    "sitemap": {
+        "changefreq": "monthly",
+        "priority": 0.5,
+        "filename": "sitemap.xml"
+    },
     "build": {
         "buildStats": {
             "enable": true
