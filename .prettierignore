@@ -2,8 +2,5 @@
 layouts/**/*.html
 archetypes/**/*.md
 
-# Hugo content files (optional - you might want Prettier for regular markdown)
+# Hugo content files
 content/**/*.md
-
-# Hugo configuration that might have template syntax
-hugo.toml
