@@ -37,15 +37,15 @@
 
     <!-- Hero/Featured Image -->
     {{ if .Params.featured_image }}
-      {{ $image := .Resources.GetMatch .Params.featured_image }}
-      {{ if $image }}
-        <div class="mb-8">
-          {{ $hero := $image.Resize "x1200 smart avif" }}
-          <img src="{{ $hero.RelPermalink }}" 
-               alt="{{ .Title }}" 
-               class="object-cover w-full h-64 border border-gray-200 rounded-lg shadow-sm md:h-80 dark:shadow-none dark:border-gray-700">
-        </div>
-      {{ end }}
+      <div class="mb-8">
+        {{ partial "responsive-image.html" (dict 
+          "image" .Params.featured_image 
+          "alt" .Title 
+          "context" . 
+          "size" "hero"
+          "class" "object-cover w-full h-64 border border-gray-200 rounded-lg shadow-sm md:h-80 dark:shadow-none dark:border-gray-700"
+        ) }}
+      </div>
     {{ end }}
 
     <!-- Series Badge -->
