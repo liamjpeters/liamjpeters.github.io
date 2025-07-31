@@ -1,0 +1,48 @@
+{{/* 
+  Social Media Image URL Generator
+  Usage: {{ partial "social-image-url.html" (dict "image" .Params.featured_image "context" . "type" "og") }}
+  Types: "og" (1200x630), "twitter" (1200x675), "schema" (1200x630)
+*/}}
+{{ $context := .context }}
+{{ $imagePath := .image }}
+{{ $type := .type | default "og" }}
+
+{{/* Define social media image dimensions */}}
+{{ $dimensions := dict 
+  "og" "1200x630" 
+  "twitter" "1200x675" 
+  "schema" "1200x630" 
+}}
+{{ $targetSize := index $dimensions $type }}
+
+{{ $imageURL := "" }}
+
+{{ if $imagePath }}
+  {{/* Try page resource first */}}
+  {{ $pageResource := $context.Resources.GetMatch $imagePath }}
+  {{ if $pageResource }}
+    {{/* Page resource - process with Hugo */}}
+    {{ $resized := $pageResource.Resize (printf "%s smart q85" $targetSize) }}
+    {{ $imageURL = $resized.Permalink }}
+  {{ else }}
+    {{/* Try assets folder */}}
+    {{ $assetResource := resources.Get $imagePath }}
+    {{ if $assetResource }}
+      {{/* Asset resource - process with Hugo */}}
+      {{ $resized := $assetResource.Resize (printf "%s smart q85" $targetSize) }}
+      {{ $imageURL = $resized.Permalink }}
+    {{ else if strings.HasPrefix $imagePath "/" }}
+      {{/* Static file - can't process, use as-is but prepend baseURL */}}
+      {{ $imageURL = printf "%s%s" $context.Site.BaseURL (strings.TrimPrefix "/" $imagePath) }}
+    {{ else if strings.HasPrefix $imagePath "http" }}
+      {{/* External URL - use as-is */}}
+      {{ $imageURL = $imagePath }}
+    {{ else }}
+      {{/* Relative path - assume it's a page resource */}}
+      {{ $imageURL = printf "%s%s" $context.Permalink $imagePath }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{/* Return the processed image URL */}}
+{{ return $imageURL }}
