@@ -4,6 +4,9 @@ date: 2025-07-25T10:00:00-00:00
 draft: false
 tags: ["PowerShell", "Module Development"]
 featured_image: "hero.jpg"
+ai_generated_image: true
+ai_tool: "Google Pixel Studio (Imagen 3)"
+ai_prompt: "A series of stylised, glowing building blocks, neatly stacked. Behind them a coding window and a cursor. The overall tone should be clean and modern. Colours should lean towards PowerShell's blue and purple and be bright"
 description: "The journey to building robust, shareable PowerShell modules begins with a fundamental concept: the PowerShell function. Functions are the heart of any well-structured script or module, allowing you to encapsulate reusable logic."
 series: "powershell-modules"
 series_part: 1
