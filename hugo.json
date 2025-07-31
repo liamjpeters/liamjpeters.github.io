@@ -4,6 +4,7 @@
     "title": "Liam Peters",
     "enableRobotsTXT": true,
     "enableEmoji": true,
+    "enableGitInfo": true,
     "googleAnalytics": "",
     "disableHugoGeneratorInject": true,
     "build": {
@@ -48,7 +49,7 @@
         "description": "A technical blog about Systems Automation and PowerShell",
         "author": "Liam Peters",
         "keywords": ["blog", "PowerShell", "development"],
-        "images": ["/img/me.jpg"],
+        "images": ["img/me.jpg"],
         "showReadingTime": true,
         "showWordCount": true,
         "showToc": true,
