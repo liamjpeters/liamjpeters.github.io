@@ -1,6 +1,5 @@
 ---
 title: "About"
-date: 2025-01-24
 draft: false
 description: "A bit about me and what you'll find on this blog"
 ---
