@@ -16,8 +16,12 @@
         <meta property="og:title" content="{{ if and .Title (ne .Title .Site.Title) }}{{ .Title }}{{ else }}{{ .Site.Title }}{{ end }}">
         <meta property="og:description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
         {{ with .Params.featured_image }}
-        <meta property="og:image" content="{{ $.Permalink }}{{ . }}">
+        {{ $imageURL := partial "social-image-url.html" (dict "image" . "context" $ "type" "og") }}
+        <meta property="og:image" content="{{ $imageURL }}">
         <meta property="og:image:alt" content="{{ $.Title }}">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+        <meta property="og:image:type" content="image/jpeg">
         {{ end }}
         <meta property="og:site_name" content="{{ .Site.Title }}">
         <meta property="og:locale" content="{{ replace .Site.LanguageCode "-" "_" }}">
@@ -38,8 +42,11 @@
         <meta name="twitter:title" content="{{ if and .Title (ne .Title .Site.Title) }}{{ .Title }}{{ else }}{{ .Site.Title }}{{ end }}">
         <meta name="twitter:description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
         {{ with .Params.featured_image }}
-        <meta name="twitter:image" content="{{ $.Permalink }}{{ . }}">
+        {{ $imageURL := partial "social-image-url.html" (dict "image" . "context" $ "type" "twitter") }}
+        <meta name="twitter:image" content="{{ $imageURL }}">
         <meta name="twitter:image:alt" content="{{ $.Title }}">
+        <meta name="twitter:image:width" content="1200">
+        <meta name="twitter:image:height" content="675">
         {{ end }}
         
         <!-- Canonical URL -->
