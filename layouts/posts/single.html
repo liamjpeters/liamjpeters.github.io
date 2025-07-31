@@ -89,21 +89,17 @@
   <nav class="flex items-center justify-between pt-8 mt-12 border-t border-gray-200 dark:border-gray-700">
     <div>
       {{ with .PrevInSection }}
-        <a href="{{ .RelPermalink }}" class="flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300">
-          <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-          </svg>
+        <a href="{{ .RelPermalink }}" class="flex items-center text-gray-600 dark:text-gray-400">
+          {{ partial "icon.html" (dict "name" "arrow-left" "class" "w-4 h-4 mr-2") }}
           Previous: {{ .Title }}
         </a>
       {{ end }}
     </div>
     <div>
       {{ with .NextInSection }}
-        <a href="{{ .RelPermalink }}" class="flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300">
+        <a href="{{ .RelPermalink }}" class="flex items-center text-gray-600 dark:text-gray-400">
           Next: {{ .Title }}
-          <svg class="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-          </svg>
+          {{ partial "icon.html" (dict "name" "arrow-left" "class" "w-4 h-4 ml-2 rotate-180") }}
         </a>
       {{ end }}
     </div>
