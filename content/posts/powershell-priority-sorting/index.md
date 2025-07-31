@@ -212,8 +212,8 @@ to an integer for proper numerical sorting:
 ```powershell
 $Servers | Sort-Object {
     switch -Regex ($_) {
-        '^STG-' { 0; break }
-        '^DEV-' { 1; break }
+        '^DEV-' { 0; break }
+        '^STG-' { 1; break }
         '^PRD-' { 2; break }
         default { 3 }
     }
