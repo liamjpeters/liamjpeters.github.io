@@ -50,15 +50,15 @@
                 <article class="flex flex-col h-full overflow-hidden bg-white border border-gray-200 rounded-lg shadow-sm cursor-pointer dark:bg-gray-800 dark:border-gray-700 hover:shadow-md dark:shadow-none">
                     <!-- Featured Image -->
                     {{ if .Params.featured_image }}
-                        {{ $image := .Resources.GetMatch .Params.featured_image }}
-                        {{ if $image }}
-                            <div class="flex-shrink-0 aspect-video">
-                                {{ $thumbnail := $image.Resize "x450 smart avif" }}
-                                <img src="{{ $thumbnail.RelPermalink }}"
-                                    alt="{{ .Title }}"
-                                    class="object-cover w-full h-full">
-                            </div>
-                        {{ end }}
+                        <div class="flex-shrink-0 aspect-video">
+                            {{ partial "responsive-image.html" (dict 
+                              "image" .Params.featured_image 
+                              "alt" .Title 
+                              "context" . 
+                              "size" "thumbnail"
+                              "class" "object-cover w-full h-full"
+                            ) }}
+                        </div>
                     {{ end }}
 
                     <div class="flex flex-col flex-grow p-6">
