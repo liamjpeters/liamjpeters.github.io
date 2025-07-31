@@ -63,7 +63,7 @@ $Items | Sort-Object {
 We get the below sorted list; where Banana and Blueberry come first, followed by 
 Orange, then everything else sorted alphabetically.
 
-```shell
+```shell {linenos=false}
 Banana
 Blueberry
 Orange
@@ -184,7 +184,7 @@ $Servers | Sort-Object {
 
 This produces our expected result:
 
-```shell
+```shell {linenos=false}
 DEV-00001
 DEV-00002
 STG-00001
@@ -261,7 +261,7 @@ This produces our final result: servers sorted first by environment priority
 (development, staging, production), then by server number in descending order 
 within each environment:
 
-```shell
+```shell {linenos=false}
 DEV-00002
 DEV-00001
 STG-000020
