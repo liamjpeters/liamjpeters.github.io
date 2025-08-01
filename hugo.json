@@ -30,6 +30,10 @@
     "module": {
         "mounts": [
             {
+                "source": "static",
+                "target": "static"
+            },
+            {
                 "source": "assets",
                 "target": "assets"
             },
