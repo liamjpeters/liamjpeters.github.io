@@ -1,42 +1,37 @@
 # Personal Blog
 
-A modern, responsive personal blog built with Hugo static site generator and styled with Tailwind CSS. Features a custom hand-rolled theme with full dark/light mode support, responsive design, and blog series organization.
-
-## Features
-
--   ⚡ **Hugo Static Site Generator**: Lightning-fast static site generation
--   🎨 **Custom Theme**: Hand-rolled responsive design with Tailwind CSS CLI
--   🌓 **Smart Theme Switching**: Light/dark mode with system preference detection
--   📱 **Fully Responsive**: Mobile-first design with adaptive navigation
--   � **Blog Series Support**: Organize posts into multi-part series
--   🎯 **Syntax Highlighting**: Dracula theme for beautiful code blocks
--   � **VS Code Integration**: Prettier and Headwind extensions for formatting
--   🚀 **GitHub Pages Ready**: Automated deployment workflow
+The sources for [https://liampeters.co.uk](https://liampeters.co.uk) - A modern,
+responsive personal blog built with Hugo static site generator and
+styled with Tailwind CSS. Features a custom hand-rolled theme with full
+dark/light mode support, responsive design, and blog series organization.
 
 ## Quick Start
 
 ### Prerequisites
 
 -   [Hugo](https://gohugo.io/installation/) (extended version)
--   [Tailwind CSS CLI](https://tailwindcss.com/blog/standalone-cli) standalone executable
+-   [Tailwind CSS CLI](https://tailwindcss.com/blog/standalone-cli) standalone
+    executable
+-   [Image Magick](https://imagemagick.org/index.php) for favicon generation
+    (_optional_)
 -   VS Code with recommended extensions (optional but recommended)
 
 ### Development
 
 1. **Clone and setup**:
 
-    ```bash
-    git clone <your-repo-url>
-    cd <your-repo-name>
+    ```powershell
+    git clone https://github.com/liamjpeters/liamjpeters.github.io.git
+    cd liamjpeters.github.io
     ```
 
 2. **Start development server**:
 
-    ```bash
+    ```powershell
     hugo server --buildDrafts
     ```
 
-3. **Visit your site**: `http://localhost:1313`
+3. **Visit site**: `http://localhost:1313`
 
 ### VS Code Development (Recommended)
 
@@ -87,7 +82,7 @@ hugo-blog/
 │   └── shortcodes/               # Custom Hugo shortcodes
 ├── static/                       # Static assets (served as-is)
 ├── .prettierrc                   # Prettier configuration
-├── hugo.toml                     # Hugo configuration
+├── hugo.json                     # Hugo configuration
 ├── tailwind.config.js            # Tailwind CSS configuration
 ├── GenerateFavicons.ps1          # Favicon generation script
 └── README.md
@@ -99,9 +94,8 @@ hugo-blog/
 
 Create a new Markdown file in the `content/posts/` directory:
 
-```bash
-# Create the file
-touch content/posts/my-new-post.md
+```powershell
+New-Item content/posts/my-new-post.md
 ```
 
 **Example front matter**:
@@ -117,6 +111,11 @@ description: "A beginner's guide to building websites with Hugo static site gene
 # Optional series fields
 series: "hugo-basics"
 series_part: 1
+
+# Optional AI disclosures
+ai_generated_image: true
+ai_tool: "Google Pixel Studio (Imagen 3)"
+ai_prompt: "Prompt used to generate the image"
 ---
 Your post content here using Markdown...
 ```
@@ -131,14 +130,20 @@ Your post content here using Markdown...
 -   `description`: Short snippet shown on list pages and meta descriptions
 -   `series`: (Optional) Links post to a series by series filename
 -   `series_part`: (Optional) Numeric order within the series
+-   `ai_generated_image`: (Optional) Set to `true` if the feature image is an
+    AI-generated image
+-   `ai_tool`: (Optional) Name of the AI tool used for image generation
+-   `ai_prompt`: (Optional) Prompt used to generate the image
+
+---
 
 ### Creating a Series
 
 Create a new Markdown file in the `content/series/` directory:
 
-```bash
+```powershell
 # Create the series definition file
-touch content/series/hugo-basics.md
+New-Item content/series/hugo-basics.md
 ```
 
 **Series front matter example**:
@@ -152,7 +157,8 @@ order: 1
 visible: true
 draft: false
 ---
-This series covers everything you need to know about Hugo, from installation to advanced templating techniques.
+This series covers everything you need to know about Hugo, from installation to
+advanced templating techniques.
 ```
 
 **Series front matter fields**:
@@ -162,20 +168,21 @@ This series covers everything you need to know about Hugo, from installation to 
 -   `color`: Hex color code for series branding/badges
 -   `order`: Numeric order for series display (lower numbers first)
 -   `visible`: Set to `true` to show in production, `false` to keep hidden
--   `draft`: Keep as `false` so Hugo processes the file
 
 **Development vs Production**:
 
--   **Development**: `hugo server --buildDrafts` shows all series (including `visible: false`)
+-   **Development**: `hugo server --buildDrafts` shows all series (including
+    `visible: false`)
 -   **Production**: `hugo` only shows series with `visible: true`
 
-**Note**: The series filename (e.g., `hugo-basics.md`) serves as the unique identifier that posts reference in their `series` field.
+**Note**: The series filename (e.g., `hugo-basics.md`) serves as the unique
+identifier that posts reference in their `series` field.
 
 ## Building and Deployment
 
 ### Local Development
 
-```bash
+```powershell
 # Start Hugo development server
 hugo server --buildDrafts
 ```
@@ -188,7 +195,7 @@ Hugo automatically:
 
 ### Production Build
 
-```bash
+```powershell
 # Build site (Hugo handles CSS processing automatically)
 hugo --minify
 ```
@@ -206,7 +213,7 @@ The site automatically deploys to GitHub Pages when you push to the main branch:
 
 1. **Enable GitHub Pages** in repository settings
 2. **Set source to "GitHub Actions"**
-3. **Update `baseURL`** in `hugo.toml` to your GitHub Pages URL
+3. **Update `baseURL`** in `hugo.json` to your GitHub Pages URL
 4. **Push to main branch** - deployment is automatic
 
 The workflow handles both CSS building and Hugo site generation.
@@ -255,7 +262,8 @@ Uses **Dracula theme** for syntax highlighting with:
 
 ### VS Code Extensions
 
-The project recommends these extensions (auto-suggested when you open the project):
+The project recommends these extensions (auto-suggested when you open the
+project):
 
 -   **Hugo Language Support**: Template syntax highlighting
 -   **Prettier**: Code formatting
@@ -269,52 +277,6 @@ The project recommends these extensions (auto-suggested when you open the projec
 -   **Format on save** enabled
 -   **Tailwind class sorting** with Headwind
 -   **Prettier** for CSS, JS, JSON, and Markdown
-
-## Customization
-
-### Colors and Design
-
-Edit `tailwind.config.js`:
-
-```javascript
-module.exports = {
-    theme: {
-        extend: {
-            colors: {
-                primary: {
-                    // Your brand colors
-                },
-            },
-        },
-    },
-};
-```
-
-### Layout Templates
-
-Customize templates in `layouts/`:
-
--   `baseof.html`: Overall site structure
--   `single.html`: Individual post layout
--   `list.html`: Archive and listing pages
-
-### Custom Styles
-
-Add styles to `assets/css/input.css`:
-
-```css
-@layer components {
-    .custom-component {
-        @apply bg-white dark:bg-gray-800 rounded-lg shadow;
-    }
-}
-```
-
-## Troubleshooting
-
-**CSS not updating**: Rebuild CSS with Tailwind CLI and restart Hugo server
-**Template errors**: Check Hugo template syntax in layouts
-**Series not linking**: Ensure series name matches between content/series/ and post front matter
 
 ## Attributions
 
@@ -335,4 +297,4 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ## Note:
 
-_README Written by GitHub Copilot_
+_README mostly written by GitHub Copilot_
