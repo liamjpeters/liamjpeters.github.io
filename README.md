@@ -89,6 +89,7 @@ hugo-blog/
 ├── .prettierrc                   # Prettier configuration
 ├── hugo.toml                     # Hugo configuration
 ├── tailwind.config.js            # Tailwind CSS configuration
+├── GenerateFavicons.ps1          # Favicon generation script
 └── README.md
 ```
 
