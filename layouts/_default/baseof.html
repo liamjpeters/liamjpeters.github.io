@@ -574,6 +574,34 @@
                     childList: true,
                     subtree: true
                 });
+
+                // Animated cursor functionality
+                function animateCursorCharacters() {
+                    // Find all code blocks (both inline and block)
+                    const codeElements = document.querySelectorAll('code, pre code');
+                    
+                    codeElements.forEach(function(codeElement) {
+                        // Get the text content
+                        let htmlContent = codeElement.innerHTML;
+                        
+                        // Replace the block character with an animated version
+                        // Using a more specific regex to avoid conflicts
+                        const cursorRegex = /█/g;
+                        
+                        if (cursorRegex.test(htmlContent)) {
+                            // Wrap each cursor character in a span with animation class
+                            const animatedContent = htmlContent.replace(
+                                cursorRegex, 
+                                '<span class="animated-cursor">█</span>'
+                            );
+                            
+                            codeElement.innerHTML = animatedContent;
+                        }
+                    });
+                }
+
+                // Initialize cursor animations
+                animateCursorCharacters();
             });
         </script>
     </body>
