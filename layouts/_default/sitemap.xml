@@ -1,7 +1,6 @@
 {{ printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
-        xmlns:ai="https://schema.org/ImageGenerationTechnology">
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   {{- range .Data.Pages }}
   {{- $context := . -}}
   {{- if and (not .Draft) (not (in .RelPermalink "/404")) (not (and (isset .Params "noindex") .Params.noindex)) }}
@@ -52,16 +51,6 @@
       <image:title>{{ $context.Title }}</image:title>
       {{- with $context.Description }}
       <image:caption>{{ . }}</image:caption>
-      {{- end }}
-      {{- /* AI generation metadata */ -}}
-      {{- if $context.Params.ai_generated_image }}
-      <ai:generated>true</ai:generated>
-      {{- with $context.Params.ai_tool }}
-      <ai:tool>{{ . }}</ai:tool>
-      {{- end }}
-      {{- with $context.Params.ai_prompt }}
-      <ai:prompt>{{ . }}</ai:prompt>
-      {{- end }}
       {{- end }}
     </image:image>
     {{- end }}
