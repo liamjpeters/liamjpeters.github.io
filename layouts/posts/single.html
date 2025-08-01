@@ -85,8 +85,41 @@
     {{ .Content }}
   </div>
 
+  <!-- Social Sharing -->
+  <div class="flex flex-col items-end gap-2 pt-8 mt-8 align-top border-t border-gray-200 dark:border-gray-700">
+    <span class="text-xs font-medium text-gray-600 dark:text-gray-400">Share Post</span>
+    <div class="flex items-center justify-end gap-4">
+      <!-- Twitter/X Share -->
+      <a href="https://twitter.com/intent/tweet?url={{ .Permalink | urlquery }}&text={{ .Title | urlquery }}" 
+         target="_blank" 
+         rel="noopener noreferrer"
+         class="flex items-center justify-center w-8 h-8 transition-transform bg-black rounded-full hover:scale-110"
+         title="Share on X (Twitter)">
+        {{ partial "icon.html" (dict "name" "x" "class" "w-4 h-4 text-white") }}
+      </a>
+      
+      <!-- LinkedIn Share -->
+      <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ .Permalink | urlquery }}" 
+         target="_blank" 
+         rel="noopener noreferrer"
+         class="flex items-center justify-center w-8 h-8 transition-transform bg-[#0077B5] rounded-full hover:scale-110"
+         title="Share on LinkedIn">
+        {{ partial "icon.html" (dict "name" "linkedin" "class" "w-4 h-4 text-white") }}
+      </a>
+      
+      <!-- Bluesky Share -->
+      <a href="https://bsky.app/intent/compose?text={{ .Title | urlquery }}%20{{ .Permalink | urlquery }}" 
+         target="_blank" 
+         rel="noopener noreferrer"
+         class="flex items-center justify-center w-8 h-8 transition-transform bg-[#00A8E8] rounded-full hover:scale-110"
+         title="Share on Bluesky">
+        {{ partial "icon.html" (dict "name" "bluesky" "class" "w-4 h-4 text-white") }}
+      </a>
+    </div>
+  </div>
+
   <!-- Navigation -->
-  <nav class="flex items-center justify-between pt-8 mt-12 border-t border-gray-200 dark:border-gray-700">
+  <nav class="flex items-center justify-between pt-8 mt-8 border-t border-gray-200 dark:border-gray-700">
     <div>
       {{ with .PrevInSection }}
         <a href="{{ .RelPermalink }}" class="flex items-center text-gray-600 dark:text-gray-400">
