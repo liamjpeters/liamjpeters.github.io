@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+  <defs>
+    <mask id="a">
+      <path fill="#fff" d="M0 0h24v24H0z"/>
+      <path fill="#000" fill-rule="evenodd" d="M5.308 7.408a1.05 1.05 0 0 1 1.484 0l3.15 3.15a1.05 1.05 0 0 1 0 1.484l-3.15 3.15a1.05 1.05 0 0 1-1.484-1.484L7.716 11.3 5.308 8.892a1.05 1.05 0 0 1 0-1.484ZM11.3 13.4a1.05 1.05 0 0 0 0 2.1h4.2a1.05 1.05 0 0 0 0-2.1h-4.2Z" clip-rule="evenodd"/>
+    </mask>
+  </defs>
+  <circle cx="12" cy="12" r="12" mask="url(#a)"/>
+</svg>
