@@ -1,0 +1,16 @@
+{{- $link := .link -}}
+{{- $text := .text -}}
+{{- $context := .context -}}
+{{- if not $link -}}
+  {{- errorf "github-code-link partial requires a 'link' parameter" -}}
+{{- end -}}
+{{- if not $text -}}
+  {{- errorf "github-code-link partial requires a 'text' parameter" -}}
+{{- end -}}
+
+<a href="{{ $link }}" 
+     target="_blank" 
+     rel="noopener noreferrer"
+     class="inline-flex max-w-full items-center gap-2 px-4 py-1.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-full transition-colors duration-200 text-gray-700 dark:text-gray-300 no-underline hover:no-underline h-8">
+    <span class="max-w-full min-w-0 text-xs font-medium truncate transition-colors">{{ $text }}</span>
+</a>

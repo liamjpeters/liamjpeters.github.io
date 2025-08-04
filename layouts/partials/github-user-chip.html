@@ -1,0 +1,35 @@
+{{- $username := .username -}}
+{{- $context := .context -}}
+{{- if not $username -}}
+  {{- errorf "github-user-chip partial requires a 'username' parameter" -}}
+{{- end -}}
+
+{{- $apiURL := printf "https://api.github.com/users/%s" $username -}}
+{{- $response := resources.GetRemote $apiURL -}}
+{{- $userData := $response | transform.Unmarshal -}}
+
+{{- if $userData -}}
+  {{- $avatarURL := $userData.avatar_url -}}
+  {{- $displayName := $userData.name | default $userData.login -}}
+  {{- $profileURL := $userData.html_url -}}
+  
+  <a href="{{ $profileURL }}" 
+     target="_blank" 
+     rel="noopener noreferrer"
+     class="inline-flex max-w-full items-center gap-2 pl-1 pr-4 py-1.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-full transition-colors duration-200 text-gray-700 dark:text-gray-300 no-underline hover:no-underline h-8">
+    <img src="{{ $avatarURL }}" 
+         alt="{{ $displayName }}" 
+         class="flex-shrink-0 w-6 h-6 rounded-full"
+         loading="lazy">
+    <span class="max-w-full min-w-0 text-xs font-medium truncate transition-colors">{{ $displayName }}</span>
+  </a>
+{{- else -}}
+  {{- warnf "Failed to fetch GitHub user data for username: %s" $username -}}
+  <a href="https://github.com/{{ $username }}" 
+     target="_blank" 
+     rel="noopener noreferrer"
+     class="inline-flex max-w-full items-center gap-2 pl-1 pr-4 py-1.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-full transition-colors duration-200 text-gray-700 dark:text-gray-300 no-underline hover:no-underline h-8">
+    {{ partial "icon.html" (dict "name" "github" "class" "w-6 h-6 text-black dark:text-white flex-shrink-0") }}
+    <span class="max-w-full min-w-0 text-xs font-medium truncate transition-colors">{{ $username }}</span>
+  </a>
+{{- end -}}
