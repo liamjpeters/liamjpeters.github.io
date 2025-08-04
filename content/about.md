@@ -53,4 +53,5 @@ to the community that's taught me so much over the years.
 
 Got a question about a post? Found a better way to solve something? I'd love to
 hear from you. The best conversations happen when we're all learning from each
-other.
+other. Reach out to me through [Github](https://github.com/liamjpeters) or
+[LinkedIn](https://www.linkedin.com/in/liamjpeters).
