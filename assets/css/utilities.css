@@ -35,3 +35,8 @@ pre > code.language-no-highlight {
     /* Ensure the cursor stays inline */
     display: inline;
 }
+
+.prose :where(blockquote p):before,
+.prose :where(blockquote p):after {
+    content: none !important;
+}
