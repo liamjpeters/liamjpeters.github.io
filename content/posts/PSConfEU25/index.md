@@ -1,7 +1,7 @@
 ---
 title: "PSConfEU 2025 Roundup"
 date: 2025-08-05T18:00:00+01:00
-draft: true
+draft: false
 tags: ["PowerShell", "Conference", "Roundup", "PSConfEU"]
 featured_image: "hero.png"
 ai_generated_image: true
