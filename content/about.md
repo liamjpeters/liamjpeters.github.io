@@ -14,7 +14,7 @@ PowerShell, trying to solve interesting problems.
 
   </div>
   <div class="flex-shrink-0">
-    <img src="/img/me.jpg" alt="Me" class="object-cover w-40 mr-8 rounded-full shadow-sm aspect-square md:w-64" />
+    <img src="/img/me.jpg" alt="Me" class="object-cover w-40 rounded-full shadow-sm md:mr-8 aspect-square md:w-64" />
   </div>
 </div>
 
