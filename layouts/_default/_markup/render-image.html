@@ -1,0 +1,5 @@
+<img src="{{ .Destination | safeURL }}"
+  {{- with .PlainText }} alt="{{ . }}"{{ end -}}
+  {{- with .Title }} title="{{ . }}"{{ end -}}
+  class="rounded-lg shadow-sm dark:shadow-none"
+>
