@@ -220,6 +220,8 @@ Version v0.2.0 of the PowerShell AST Inspector is available now. It can be
 downloaded from either [GitHub](https://github.com/liamjpeters/PowerShell-AST-Inspector/releases/tag/v0.2.0)
 or [the VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=liamjpeters.powershell-ast-inspector).
 
+![screenshot of version 2 of the extension](img/extensionV2.png)
+
 The full source code is available on GitHub - PRs are welcome!
 
 {{< githubrepo repo="liamjpeters/PowerShell-AST-Inspector" >}}
