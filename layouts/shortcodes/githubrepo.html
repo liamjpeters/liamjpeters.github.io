@@ -1,0 +1,105 @@
+{{/*
+  GitHub repo card shortcode (self-contained)
+  Usage in Markdown:
+    {{< githubrepo repo="owner/name" >}}
+    or positional: {{< githubrepo "owner/name" >}}
+
+  Notes:
+  - Fetches GitHub data directly here (no partial dependency) to avoid security restrictions.
+  - Optional token to increase rate limits: pass param `token` or set site param `params.github_token`.
+*/}}
+{{- $repoId := .Get "repo" | default (.Get 0) -}}
+{{- if not (and $repoId (strings.Contains $repoId "/")) -}}
+  {{- errorf "githubrepo shortcode requires repo in 'owner/name' format. Got: %q" $repoId -}}
+{{- end -}}
+
+{{- $token := or (.Get "token") site.Params.github_token -}}
+{{- $headers := cond $token (dict "Authorization" (printf "Bearer %s" $token) "Accept" "application/vnd.github+json") (dict "Accept" "application/vnd.github+json") -}}
+
+{{- $repoApi := printf "https://api.github.com/repos/%s" $repoId -}}
+{{- $repoRes := resources.GetRemote $repoApi (dict "headers" $headers) -}}
+{{- $repo := cond $repoRes (transform.Unmarshal $repoRes) nil -}}
+
+{{- $contributorsCount := 0 -}}
+{{- if $repo -}}
+  {{- $contribApi := printf "https://api.github.com/repos/%s/contributors?per_page=100&anon=true" $repoId -}}
+  {{- with resources.GetRemote $contribApi (dict "headers" $headers) -}}
+    {{- $contrib := transform.Unmarshal . -}}
+    {{- with $contrib -}}
+      {{- $contributorsCount = len . -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $htmlURL := (cond $repo $repo.html_url (printf "https://github.com/%s" $repoId)) -}}
+{{- $ownerName := (cond $repo $repo.owner.login $repoId) -}}
+{{- $repoName := (cond $repo $repo.name $repoId) -}}
+{{- $fullName := (cond $repo $repo.full_name $repoId) -}}
+{{- $description := cond (and $repo $repo.description) $repo.description "" -}}
+{{- $stars := cond $repo $repo.stargazers_count 0 -}}
+{{- $issues := cond $repo $repo.open_issues_count 0 -}}
+{{- $forks := cond $repo $repo.forks_count 0 -}}
+{{- $ownerAvatar := cond (and $repo $repo.owner $repo.owner.avatar_url) $repo.owner.avatar_url "" -}}
+
+<a href="{{ $htmlURL }}" target="_blank" rel="noopener noreferrer"
+   class="block p-4 no-underline bg-white border border-gray-200 rounded-lg shadow-sm cursor-pointer dark:border-gray-700 dark:bg-gray-800 hover:no-underline hover:shadow-md dark:shadow-none">
+
+   {{/*  Main container  */}}
+    <div class="flex flex-col">
+
+        {{/*  Contains the title with description and image  */}}
+        <div class="flex items-center flex-1 min-w-0">
+
+            {{/*  Contains the title and description  */}}
+            <div class="flex flex-col flex-1 min-w-0 gap-4">
+                
+                {{/*  Contains the github icon and the title  */}}
+                <div class="flex items-center gap-2 text-center text-gray-900 dark:text-gray-100">
+                    {{ partial "icon.html" (dict "name" "github" "class" "shrink-0 w-5 h-5 text-gray-700 dark:text-gray-300") }}
+                    <p class="!m-0 text-2xl font-normal truncate align-middle">
+                        {{ $ownerName }}/<span class="font-bold">{{ $repoName }}</span>
+                    </p>
+                </div>
+
+                {{ if $description }}
+                <p class="!m-0 text-sm text-gray-600 dark:text-gray-400 max-w-lg pr-4">{{ $description }}</p>
+                {{ end }}
+
+                {{/*  Contains the stats and view on github call to action  */}}
+                <div>
+                    {{/*  Contains the stats  */}}
+                    <div class="flex flex-wrap items-center mt-3 text-sm text-gray-700 gap-x-4 gap-y-2 dark:text-gray-300">
+                        <span class="inline-flex items-center gap-1.5">
+                            {{ partial "icon.html" (dict "name" "star" "class" "w-4 h-4") }}
+                            <span>{{ $stars }}</span>
+                            <span class="sr-only">stars</span>
+                        </span>
+                        <span class="inline-flex items-center gap-1.5">
+                            {{ partial "icon.html" (dict "name" "issues" "class" "w-4 h-4") }}
+                            <span>{{ $issues }}</span>
+                            <span class="sr-only">open issues</span>
+                        </span>
+                        <span class="inline-flex items-center gap-1.5">
+                            {{ partial "icon.html" (dict "name" "fork" "class" "w-4 h-4") }}
+                            <span>{{ $forks }}</span>
+                            <span class="sr-only">forks</span>
+                        </span>
+                        <span class="inline-flex items-center gap-1.5">
+                            {{ partial "icon.html" (dict "name" "users" "class" "w-4 h-4") }}
+                            <span>{{ $contributorsCount }}</span>
+                            <span class="sr-only">contributors (approximate)</span>
+                        </span>
+                    </div>
+    
+                    
+                </div>
+            </div>
+
+            {{ if $ownerAvatar }}
+            <img src="{{ $ownerAvatar }}" alt="Owner avatar" loading="lazy"
+                class="flex-shrink-0 object-cover !m-0 rounded-lg w-24 h-24" />
+            {{ end }}
+        </div>
+    </div>
+
+</a>
