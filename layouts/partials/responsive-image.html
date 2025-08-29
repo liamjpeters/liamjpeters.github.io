@@ -21,8 +21,8 @@
   {{ $image := $context.Resources.GetMatch $imagePath }}
   {{ if $image }}
     <!-- Page resource image -->
-    {{ $resized := $image.Resize (printf "%s smart q85" $targetSize) }}
-    {{ $resizedWebp := $image.Resize (printf "%s smart webp q85" $targetSize) }}
+    {{ $resized := $image.Fit (printf "%s smart q100" $targetSize) }}
+    {{ $resizedWebp := $image.Fit (printf "%s smart webp q100" $targetSize) }}
     <picture>
       <source srcset="{{ $resizedWebp.RelPermalink }}" type="image/webp">
       <img src="{{ $resized.RelPermalink }}" 
@@ -34,8 +34,8 @@
     <!-- Try assets -->
     {{ $assetImage := resources.Get $imagePath }}
     {{ if $assetImage }}
-      {{ $resized := $assetImage.Resize (printf "%s smart q85" $targetSize) }}
-      {{ $resizedWebp := $assetImage.Resize (printf "%s smart webp q85" $targetSize) }}
+      {{ $resized := $assetImage.Fit (printf "%s smart q100" $targetSize) }}
+      {{ $resizedWebp := $assetImage.Fit (printf "%s smart webp q100" $targetSize) }}
       <picture>
         <source srcset="{{ $resizedWebp.RelPermalink }}" type="image/webp">
         <img src="{{ $resized.RelPermalink }}" 
