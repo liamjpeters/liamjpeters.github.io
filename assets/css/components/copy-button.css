@@ -47,3 +47,7 @@
 .code-block-container {
   position: relative;
 }
+
+.code-block-container pre code span.cl {
+  padding-right: 72px;
+}
