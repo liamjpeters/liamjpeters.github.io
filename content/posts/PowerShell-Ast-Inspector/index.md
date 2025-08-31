@@ -66,7 +66,7 @@ The plan was starting to come together. I envisioned something like:
   file contents and produces a JSON representation of the AST.
 
 - We use the returned AST, passed into Node.js land, to build
-  the tree view representation (using the well documented [Tree View API](https://code.visualstudio.com/api/extension-guides/tree view)).
+  the tree view representation (using the well documented [Tree View API](https://code.visualstudio.com/api/extension-guides/tree-view)).
 
 ## PowerShell Analysis Script
 
