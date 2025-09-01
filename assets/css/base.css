@@ -37,7 +37,6 @@ pre .hl {
 /* Inline code styling - ensure it respects dark mode */
 code:not(.chroma code) {
     @apply px-1 py-0.5 rounded text-sm bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-gray-200;
-    white-space: nowrap;
 }
 
 /* Custom scrollbar styling for code blocks */

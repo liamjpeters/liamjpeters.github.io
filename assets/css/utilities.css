@@ -8,6 +8,9 @@
 
 .prose code:not(:where(pre code)) {
     font-weight: normal;
+    white-space: break-spaces;
+    word-break: break-word;
+    overflow-wrap: anywhere;
 }
 
 pre > code.language-no-highlight {
