@@ -1,0 +1,12 @@
+- name: GitHub Foundations
+  description: Validates understanding of the foundational topics and concepts of collaborating, contributing, and working on GitHub.
+  date: "2025"
+  url: "https://learn.microsoft.com/api/credentials/share/en-us/LiamPeters-2155/CEA3073C36009B95?sharingId=37445EFEE3A5C36E"
+  image: "/img/certs/github-foundations.svg"
+
+- name: Azure Fundamentals
+  description: Demonstrates foundational knowledge of cloud concepts, Azure architecture and services, and Azure management and governance.
+  date: "2023"
+  url: "https://learn.microsoft.com/api/credentials/share/en-us/LiamPeters-2155/E40492700070914B?sharingId=37445EFEE3A5C36E"
+  image: "/img/certs/microsoft-certified-fundamentals-badge.svg"
+

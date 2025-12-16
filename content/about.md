@@ -49,6 +49,11 @@ When I'm not writing PowerShell, you can find me contributing to open source
 projects on [GitHub](https://github.com/liamjpeters). I believe in giving back
 to the community that's taught me so much over the years.
 
+## Credentials
+
+{{< certificates >}}
+
+
 ## Get in touch
 
 Got a question about a post? Found a better way to solve something? I'd love to
