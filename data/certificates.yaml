@@ -1,3 +1,9 @@
+- name: GitHub Copilot
+  description: Evaluates your skill in using the AI-driven code completion tool in various programming languages, certifying your capability to optimize software development workflows efficiently.
+  date: "2025"
+  url: "https://learn.microsoft.com/api/credentials/share/en-gb/LiamPeters-2155/3AB1C60335AEA1B2?sharingId=37445EFEE3A5C36E"
+  image: "/img/certs/github-copilot.svg"
+
 - name: GitHub Foundations
   description: Validates understanding of the foundational topics and concepts of collaborating, contributing, and working on GitHub.
   date: "2025"
